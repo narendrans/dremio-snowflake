@@ -6,7 +6,7 @@ This is a community based Snowflake Dremio connector made using the ARP framewor
 
 ## Quick Download
 
-* To download a release, check the releases page in github
+* To download a release, [click here](https://github.com/narendrans/dremio-snowflake/releases)
 
 ## Building and Installation
 
