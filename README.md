@@ -1,8 +1,13 @@
 # Dremio Snowflake Connector
 [![Build Status](https://travis-ci.com/narendrans/dremio-snowflake.svg?branch=master)](https://travis-ci.com/narendrans/dremio-snowflake)
+
 ## Overview
 
 This is a community based Snowflake Dremio connector made using the ARP framework.
+
+## Demo
+
+![Snowflake demo](snowflake.gif)
 
 ## Quick Download
 
