@@ -1,6 +1,6 @@
 # Dremio Snowflake Connector
 
-[![Build Status](https://travis-ci.com/narendrans/dremio-snowflake.svg?branch=master)](https://travis-ci.com/narendrans/dremio-snowflake)
+[![Build Status](https://travis-ci.org/narendrans/dremio-snowflake.svg?branch=master)](https://travis-ci.org/narendrans/dremio-snowflake)
 
 Overview
 -----------
