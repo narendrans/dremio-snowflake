@@ -2,25 +2,48 @@
 
 [![Build Status](https://travis-ci.org/narendrans/dremio-snowflake.svg?branch=master)](https://travis-ci.org/narendrans/dremio-snowflake)
 
+<!--ts-->
+   * [Overview](#overview)
+   * [Demo](#demo)
+   * [Downloading a Release](#downloading-a-release)
+   * [Usage](#usage)
+   * [Development](#development)
+      * [Building and Installation](#building-and-installation)
+      * [Debugging](#debugging)
+<!--te-->
+
 Overview
 -----------
 
 This is a community based Snowflake Dremio connector made using the ARP framework. Check [Dremio Hub](https://github.com/dremio-hub) for more examples and [ARP Docs](https://github.com/dremio-hub/dremio-sqllite-connector#arp-file-format) for documentation. 
 
-```diff
-- This is not an official Dremio connector. 
-- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND. 
-```
+_This is not an official Dremio connector. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND._ 
 
 Demo
 -----------
 
 ![Snowflake demo](snowflake.gif)
 
-Quick Download
+Downloading a Release
 -----------
 
 * To download a release, [click here](https://github.com/narendrans/dremio-snowflake/releases)
+
+
+Usage
+-----------
+
+### Creating a new Snowflake Source
+
+### Required Parameters
+
+* Account name 
+    * A quick way to get this is to copy it from the URL - https://<ACCOUNT NAME>.snowflakecomputing.com/
+* Username, Password
+    * The username and password with which you want to connect to Snowflake 
+
+
+## Development
 
 Building and Installation
 -----------
@@ -30,11 +53,18 @@ Building and Installation
 3. Download the Snowflake JDBC driver from (https://mvnrepository.com/artifact/net.snowflake/snowflake-jdbc/3.8.6 and click on the JAR link) and put in in the <DREMIO_HOME>\jars\3rdparty folder
 4. Restart Dremio
 
-## Creating a new Snowflake Source
+Debugging
+-----------
+To debug pushdowns for queries set the following line in `logback.xml`
 
-### Required Parameters
+```
+<logger name="com.dremio.exec.store.jdbc.dialect.arp.ArpYaml">
+   <level value="${dremio.log.level:-debug}"/>
+</logger>
+ ```
+  
+You can then notice lines like below in server.log file after which you can revist the YAML file to add pushdowns based on [Snowflake SQL Reference](https://docs.snowflake.net/manuals/sql-reference-commands.html):
 
-* Account name 
-    * A quick way to get this is to copy it from the URL - https://<ACCOUNT NAME>.snowflakecomputing.com/
-* Username, Password
-    * The username and password with which you want to connect to Snowflake 
+```diff
+- 2019-07-11 18:56:24,001 [22d879a7-ce3d-f2ca-f380-005a88865700/0:foreman-planning] DEBUG c.d.e.store.jdbc.dialect.arp.ArpYaml - Operator / not supported. Aborting pushdown.
+```
