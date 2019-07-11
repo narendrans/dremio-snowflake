@@ -5,7 +5,12 @@
 Overview
 -----------
 
-This is a community based Snowflake Dremio connector made using the ARP framework.
+This is a community based Snowflake Dremio connector made using the ARP framework. Check [Dremio Hub](https://github.com/dremio-hub) for more examples and [ARP Docs](https://github.com/dremio-hub/dremio-sqllite-connector#arp-file-format) for documentation. 
+
+```diff
+- This is not an official Dremio connector. 
+- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND. 
+```
 
 Demo
 -----------
