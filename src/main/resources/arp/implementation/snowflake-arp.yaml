@@ -424,322 +424,299 @@ expressions:
         - return: bigint
           args:
             - date
-          rewrite: "CAST(EXTRACT(YEAR FROM {0}) AS INT8)"
+          rewrite: "CAST(EXTRACT(YEAR FROM {0}) AS INT)"
         - return: bigint
           args:
             - timestamp
-          rewrite: "CAST(EXTRACT(YEAR FROM {0}) AS INT8)"
+          rewrite: "CAST(EXTRACT(YEAR FROM {0}) AS INT)"
         - return: bigint
           args:
             - time
-          rewrite: "CAST(EXTRACT(YEAR FROM {0}) AS INT8)"
+          rewrite: "CAST(EXTRACT(YEAR FROM {0}) AS INT)"
         - return: bigint
           args:
             - interval_year_month
-          rewrite: "CAST(EXTRACT(YEAR FROM {0}) AS INT8)"
+          rewrite: "CAST(EXTRACT(YEAR FROM {0}) AS INT)"
         - return: bigint
           args:
             - interval_day_second
-          rewrite: "CAST(EXTRACT(YEAR FROM {0}) AS INT8)"
+          rewrite: "CAST(EXTRACT(YEAR FROM {0}) AS INT)"
     - names:
         - extract_month
       signatures:
         - return: bigint
           args:
             - date
-          rewrite: "CAST(EXTRACT(MONTH FROM {0}) AS INT8)"
+          rewrite: "CAST(EXTRACT(MONTH FROM {0}) AS INT)"
         - return: bigint
           args:
             - timestamp
-          rewrite: "CAST(EXTRACT(MONTH FROM {0}) AS INT8)"
+          rewrite: "CAST(EXTRACT(MONTH FROM {0}) AS INT)"
         - return: bigint
           args:
             - time
-          rewrite: "CAST(EXTRACT(MONTH FROM {0}) AS INT8)"
+          rewrite: "CAST(EXTRACT(MONTH FROM {0}) AS INT)"
         - return: bigint
           args:
             - interval_year_month
-          rewrite: "CAST(EXTRACT(MONTH FROM {0}) AS INT8)"
+          rewrite: "CAST(EXTRACT(MONTH FROM {0}) AS INT)"
         - return: bigint
           args:
             - interval_day_second
-          rewrite: "CAST(EXTRACT(MONTH FROM {0}) AS INT8)"
+          rewrite: "CAST(EXTRACT(MONTH FROM {0}) AS INT)"
     - names:
         - extract_day
       signatures:
         - return: bigint
           args:
             - date
-          rewrite: "CAST(EXTRACT(DAY FROM {0}) AS INT8)"
+          rewrite: "CAST(EXTRACT(DAY FROM {0}) AS INT)"
         - return: bigint
           args:
             - timestamp
-          rewrite: "CAST(EXTRACT(DAY FROM {0}) AS INT8)"
+          rewrite: "CAST(EXTRACT(DAY FROM {0}) AS INT)"
         - return: bigint
           args:
             - time
-          rewrite: "CAST(EXTRACT(DAY FROM {0}) AS INT8)"
+          rewrite: "CAST(EXTRACT(DAY FROM {0}) AS INT)"
         - return: bigint
           args:
             - interval_year_month
-          rewrite: "CAST(EXTRACT(DAY FROM {0}) AS INT8)"
+          rewrite: "CAST(EXTRACT(DAY FROM {0}) AS INT)"
         - return: bigint
           args:
             - interval_day_second
-          rewrite: "CAST(EXTRACT(DAY FROM {0}) AS INT8)"
+          rewrite: "CAST(EXTRACT(DAY FROM {0}) AS INT)"
     - names:
         - extract_hour
       signatures:
         - return: bigint
           args:
             - date
-          rewrite: "CAST(EXTRACT(HOUR FROM {0}) AS INT8)"
+          rewrite: "CAST(EXTRACT(HOUR FROM {0}) AS INT)"
         - return: bigint
           args:
             - timestamp
-          rewrite: "CAST(EXTRACT(HOUR FROM {0}) AS INT8)"
+          rewrite: "CAST(EXTRACT(HOUR FROM {0}) AS INT)"
         - return: bigint
           args:
             - time
-          rewrite: "CAST(EXTRACT(HOUR FROM {0}) AS INT8)"
+          rewrite: "CAST(EXTRACT(HOUR FROM {0}) AS INT)"
         - return: bigint
           args:
             - interval_year_month
-          rewrite: "CAST(EXTRACT(HOUR FROM {0}) AS INT8)"
+          rewrite: "CAST(EXTRACT(HOUR FROM {0}) AS INT)"
         - return: bigint
           args:
             - interval_day_second
-          rewrite: "CAST(EXTRACT(HOUR FROM {0}) AS INT8)"
+          rewrite: "CAST(EXTRACT(HOUR FROM {0}) AS INT)"
     - names:
         - extract_minute
       signatures:
         - return: bigint
           args:
             - date
-          rewrite: "CAST(EXTRACT(MINUTE FROM {0}) AS INT8)"
+          rewrite: "CAST(EXTRACT(MINUTE FROM {0}) AS INT)"
         - return: bigint
           args:
             - timestamp
-          rewrite: "CAST(EXTRACT(MINUTE FROM {0}) AS INT8)"
+          rewrite: "CAST(EXTRACT(MINUTE FROM {0}) AS INT)"
         - return: bigint
           args:
             - time
-          rewrite: "CAST(EXTRACT(MINUTE FROM {0}) AS INT8)"
+          rewrite: "CAST(EXTRACT(MINUTE FROM {0}) AS INT)"
         - return: bigint
           args:
             - interval_year_month
-          rewrite: "CAST(EXTRACT(MINUTE FROM {0}) AS INT8)"
+          rewrite: "CAST(EXTRACT(MINUTE FROM {0}) AS INT)"
         - return: bigint
           args:
             - interval_day_second
-          rewrite: "CAST(EXTRACT(MINUTE FROM {0}) AS INT8)"
+          rewrite: "CAST(EXTRACT(MINUTE FROM {0}) AS INT)"
     - names:
         - extract_second
       signatures:
         - return: bigint
           args:
             - date
-          rewrite: "CAST(EXTRACT(SECOND FROM DATE_TRUNC(''SECOND'', {0})) AS INT8)"
+          rewrite: "CAST(EXTRACT(SECOND FROM DATE_TRUNC(''SECOND'', {0})) AS INT)"
         - return: bigint
           args:
             - timestamp
-          rewrite: "CAST(EXTRACT(SECOND FROM DATE_TRUNC(''SECOND'', {0})) AS INT8)"
+          rewrite: "CAST(EXTRACT(SECOND FROM DATE_TRUNC(''SECOND'', {0})) AS INT)"
         - return: bigint
           args:
             - time
-          rewrite: "CAST(EXTRACT(SECOND FROM DATE_TRUNC(''SECOND'', {0})) AS INT8)"
+          rewrite: "CAST(EXTRACT(SECOND FROM DATE_TRUNC(''SECOND'', {0})) AS INT)"
         - return: bigint
           args:
             - interval_year_month
-          rewrite: "CAST(EXTRACT(SECOND FROM DATE_TRUNC(''SECOND'', {0})) AS INT8)"
+          rewrite: "CAST(EXTRACT(SECOND FROM DATE_TRUNC(''SECOND'', {0})) AS INT)"
         - return: bigint
           args:
             - interval_day_second
-          rewrite: "CAST(EXTRACT(SECOND FROM DATE_TRUNC(''SECOND'', {0})) AS INT8)"
+          rewrite: "CAST(EXTRACT(SECOND FROM DATE_TRUNC(''SECOND'', {0})) AS INT)"
     - names:
         - extract_century
       signatures:
         - return: bigint
           args:
             - date
-          rewrite: "CAST(EXTRACT(CENTURY FROM {0}) AS INT8)"
+          rewrite: "CAST(EXTRACT(CENTURY FROM {0}) AS INT)"
         - return: bigint
           args:
             - timestamp
-          rewrite: "CAST(EXTRACT(CENTURY FROM {0}) AS INT8)"
+          rewrite: "CAST(EXTRACT(CENTURY FROM {0}) AS INT)"
         - return: bigint
           args:
             - time
-          rewrite: "CAST(EXTRACT(CENTURY FROM {0}) AS INT8)"
+          rewrite: "CAST(EXTRACT(CENTURY FROM {0}) AS INT)"
         - return: bigint
           args:
             - interval_year_month
-          rewrite: "CAST(EXTRACT(CENTURY FROM {0}) AS INT8)"
+          rewrite: "CAST(EXTRACT(CENTURY FROM {0}) AS INT)"
         - return: bigint
           args:
             - interval_day_second
-          rewrite: "CAST(EXTRACT(CENTURY FROM {0}) AS INT8)"
+          rewrite: "CAST(EXTRACT(CENTURY FROM {0}) AS INT)"
     - names:
         - extract_decade
       signatures:
         - return: bigint
           args:
             - date
-          rewrite: "CAST(EXTRACT(DECADE FROM {0}) AS INT8)"
+          rewrite: "CAST(EXTRACT(DECADE FROM {0}) AS INT)"
         - return: bigint
           args:
             - timestamp
-          rewrite: "CAST(EXTRACT(DECADE FROM {0}) AS INT8)"
+          rewrite: "CAST(EXTRACT(DECADE FROM {0}) AS INT)"
         - return: bigint
           args:
             - time
-          rewrite: "CAST(EXTRACT(DECADE FROM {0}) AS INT8)"
+          rewrite: "CAST(EXTRACT(DECADE FROM {0}) AS INT)"
         - return: bigint
           args:
             - interval_year_month
-          rewrite: "CAST(EXTRACT(DECADE FROM {0}) AS INT8)"
+          rewrite: "CAST(EXTRACT(DECADE FROM {0}) AS INT)"
         - return: bigint
           args:
             - interval_day_second
-          rewrite: "CAST(EXTRACT(DECADE FROM {0}) AS INT8)"
+          rewrite: "CAST(EXTRACT(DECADE FROM {0}) AS INT)"
     - names:
         - extract_dow
       signatures:
         - return: bigint
           args:
             - date
-          rewrite: "CAST(EXTRACT(DOW FROM {0}) + 1 AS INT8)"
+          rewrite: "CAST(EXTRACT(DOW FROM {0}) + 1 AS INT)"
         - return: bigint
           args:
             - timestamp
-          rewrite: "CAST(EXTRACT(DOW FROM {0}) + 1 AS INT8)"
+          rewrite: "CAST(EXTRACT(DOW FROM {0}) + 1 AS INT)"
         - return: bigint
           args:
             - time
-          rewrite: "CAST(EXTRACT(DOW FROM {0}) + 1 AS INT8)"
+          rewrite: "CAST(EXTRACT(DOW FROM {0}) + 1 AS INT)"
         - return: bigint
           args:
             - interval_year_month
-          rewrite: "CAST(EXTRACT(DOW FROM {0}) + 1 AS INT8)"
+          rewrite: "CAST(EXTRACT(DOW FROM {0}) + 1 AS INT)"
         - return: bigint
           args:
             - interval_day_second
-          rewrite: "CAST(EXTRACT(DOW FROM {0}) + 1 AS INT8)"
+          rewrite: "CAST(EXTRACT(DOW FROM {0}) + 1 AS INT)"
     - names:
         - extract_doy
       signatures:
         - return: bigint
           args:
             - date
-          rewrite: "CAST(EXTRACT(DOY FROM {0}) AS INT8)"
+          rewrite: "CAST(EXTRACT(DOY FROM {0}) AS INT)"
         - return: bigint
           args:
             - timestamp
-          rewrite: "CAST(EXTRACT(DOY FROM {0}) AS INT8)"
+          rewrite: "CAST(EXTRACT(DOY FROM {0}) AS INT)"
         - return: bigint
           args:
             - time
-          rewrite: "CAST(EXTRACT(DOY FROM {0}) AS INT8)"
+          rewrite: "CAST(EXTRACT(DOY FROM {0}) AS INT)"
         - return: bigint
           args:
             - interval_year_month
-          rewrite: "CAST(EXTRACT(DOY FROM {0}) AS INT8)"
+          rewrite: "CAST(EXTRACT(DOY FROM {0}) AS INT)"
         - return: bigint
           args:
             - interval_day_second
-          rewrite: "CAST(EXTRACT(DOY FROM {0}) AS INT8)"
+          rewrite: "CAST(EXTRACT(DOY FROM {0}) AS INT)"
     - names:
         - extract_epoch
       signatures:
         - return: bigint
           args:
             - date
-          rewrite: "CAST(EXTRACT(EPOCH FROM {0}) AS INT8)"
+          rewrite: "CAST(EXTRACT(EPOCH FROM {0}) AS INT)"
         - return: bigint
           args:
             - timestamp
-          rewrite: "CAST(EXTRACT(EPOCH FROM {0}) AS INT8)"
+          rewrite: "CAST(EXTRACT(EPOCH FROM {0}) AS INT)"
         - return: bigint
           args:
             - time
-          rewrite: "CAST(EXTRACT(EPOCH FROM {0}) AS INT8)"
+          rewrite: "CAST(EXTRACT(EPOCH FROM {0}) AS INT)"
         - return: bigint
           args:
             - interval_year_month
-          rewrite: "CAST(EXTRACT(EPOCH FROM {0}) AS INT8)"
+          rewrite: "CAST(EXTRACT(EPOCH FROM {0}) AS INT)"
         - return: bigint
           args:
             - interval_day_second
-          rewrite: "CAST(EXTRACT(EPOCH FROM {0}) AS INT8)"
-    - names:
-        - extract_millennium
-      signatures:
-        - return: bigint
-          args:
-            - date
-          rewrite: "CAST(EXTRACT(MILLENIUM FROM {0}) AS INT8)"
-        - return: bigint
-          args:
-            - timestamp
-          rewrite: "CAST(EXTRACT(MILLENIUM FROM {0}) AS INT8)"
-        - return: bigint
-          args:
-            - time
-          rewrite: "CAST(EXTRACT(MILLENIUM FROM {0}) AS INT8)"
-        - return: bigint
-          args:
-            - interval_year_month
-          rewrite: "CAST(EXTRACT(MILLENIUM FROM {0}) AS INT8)"
-        - return: bigint
-          args:
-            - interval_day_second
-          rewrite: "CAST(EXTRACT(MILLENIUM FROM {0}) AS INT8)"
+          rewrite: "CAST(EXTRACT(EPOCH FROM {0}) AS INT)"
     - names:
         - extract_quarter
       signatures:
         - return: bigint
           args:
             - date
-          rewrite: "CAST(EXTRACT(QUARTER FROM {0}) AS INT8)"
+          rewrite: "CAST(EXTRACT(QUARTER FROM {0}) AS INT)"
         - return: bigint
           args:
             - timestamp
-          rewrite: "CAST(EXTRACT(QUARTER FROM {0}) AS INT8)"
+          rewrite: "CAST(EXTRACT(QUARTER FROM {0}) AS INT)"
         - return: bigint
           args:
             - time
-          rewrite: "CAST(EXTRACT(QUARTER FROM {0}) AS INT8)"
+          rewrite: "CAST(EXTRACT(QUARTER FROM {0}) AS INT)"
         - return: bigint
           args:
             - interval_year_month
-          rewrite: "CAST(EXTRACT(QUARTER FROM {0}) AS INT8)"
+          rewrite: "CAST(EXTRACT(QUARTER FROM {0}) AS INT)"
         - return: bigint
           args:
             - interval_day_second
-          rewrite: "CAST(EXTRACT(QUARTER FROM {0}) AS INT8)"
+          rewrite: "CAST(EXTRACT(QUARTER FROM {0}) AS INT)"
     - names:
         - extract_week
       signatures:
         - return: bigint
           args:
             - date
-          rewrite: "CAST(EXTRACT(WEEK FROM {0}) AS INT8)"
+          rewrite: "CAST(EXTRACT(WEEK FROM {0}) AS INT)"
         - return: bigint
           args:
             - timestamp
-          rewrite: "CAST(EXTRACT(WEEK FROM {0}) AS INT8)"
+          rewrite: "CAST(EXTRACT(WEEK FROM {0}) AS INT)"
         - return: bigint
           args:
             - time
-          rewrite: "CAST(EXTRACT(WEEK FROM {0}) AS INT8)"
+          rewrite: "CAST(EXTRACT(WEEK FROM {0}) AS INT)"
         - return: bigint
           args:
             - interval_year_month
-          rewrite: "CAST(EXTRACT(WEEK FROM {0}) AS INT8)"
+          rewrite: "CAST(EXTRACT(WEEK FROM {0}) AS INT)"
         - return: bigint
           args:
             - interval_day_second
-          rewrite: "CAST(EXTRACT(WEEK FROM {0}) AS INT8)"
+          rewrite: "CAST(EXTRACT(WEEK FROM {0}) AS INT)"
     - names:
         - "-"
       signatures:
@@ -1699,22 +1676,22 @@ expressions:
             - "varchar"
             - "integer"
           return: "boolean"
-          rewrite: "CASE WHEN ({0} IS NULL AND {1} IS NULL) OR ({0} ~ ''^-?[0-9]+$'' AND CAST({0} AS INT8) = {1}) THEN 0 ELSE 1 END = 1 "
+          rewrite: "CASE WHEN ({0} IS NULL AND {1} IS NULL) OR ({0} ~ ''^-?[0-9]+$'' AND CAST({0} AS INT) = {1}) THEN 0 ELSE 1 END = 1 "
         - args:
             - "integer"
             - "varchar"
           return: "boolean"
-          rewrite: "CASE WHEN ({0} IS NULL AND {1} IS NULL) OR ({1} ~ ''^-?[0-9]+$'' AND {0} = CAST({1} AS INT8)) THEN 0 ELSE 1 END = 1 "
+          rewrite: "CASE WHEN ({0} IS NULL AND {1} IS NULL) OR ({1} ~ ''^-?[0-9]+$'' AND {0} = CAST({1} AS INT)) THEN 0 ELSE 1 END = 1 "
         - args:
             - "varchar"
             - "bigint"
           return: "boolean"
-          rewrite: "CASE WHEN ({0} IS NULL AND {1} IS NULL) OR ({0} ~ ''^-?[0-9]+$'' AND CAST({0} AS INT8) = {1}) THEN 0 ELSE 1 END = 1 "
+          rewrite: "CASE WHEN ({0} IS NULL AND {1} IS NULL) OR ({0} ~ ''^-?[0-9]+$'' AND CAST({0} AS INT) = {1}) THEN 0 ELSE 1 END = 1 "
         - args:
             - "bigint"
             - "varchar"
           return: "boolean"
-          rewrite: "CASE WHEN ({0} IS NULL AND {1} IS NULL) OR ({1} ~ ''^-?[0-9]+$'' AND {0} = CAST({1} AS INT8)) THEN 0 ELSE 1 END = 1 "
+          rewrite: "CASE WHEN ({0} IS NULL AND {1} IS NULL) OR ({1} ~ ''^-?[0-9]+$'' AND {0} = CAST({1} AS INT)) THEN 0 ELSE 1 END = 1 "
         - args:
             - "varchar"
             - "double"
@@ -1892,22 +1869,22 @@ expressions:
             - "varchar"
             - "integer"
           return: "boolean"
-          rewrite: "(({0} IS NULL AND {1} IS NULL) OR ({0} ~ ''^-?[0-9]+$'' AND CAST({0} AS INT8) = {1}))"
+          rewrite: "(({0} IS NULL AND {1} IS NULL) OR ({0} ~ ''^-?[0-9]+$'' AND CAST({0} AS INT) = {1}))"
         - args:
             - "integer"
             - "varchar"
           return: "boolean"
-          rewrite: "(({0} IS NULL AND {1} IS NULL) OR ({1} ~ ''^-?[0-9]+$'' AND {0} = CAST({1} AS INT8)))"
+          rewrite: "(({0} IS NULL AND {1} IS NULL) OR ({1} ~ ''^-?[0-9]+$'' AND {0} = CAST({1} AS INT)))"
         - args:
             - "varchar"
             - "bigint"
           return: "boolean"
-          rewrite: "(({0} IS NULL AND {1} IS NULL) OR ({0} ~ ''^-?[0-9]+$'' AND CAST({0} AS INT8) = {1}))"
+          rewrite: "(({0} IS NULL AND {1} IS NULL) OR ({0} ~ ''^-?[0-9]+$'' AND CAST({0} AS INT) = {1}))"
         - args:
             - "bigint"
             - "varchar"
           return: "boolean"
-          rewrite: "(({0} IS NULL AND {1} IS NULL) OR ({1} ~ ''^-?[0-9]+$'' AND {0} = CAST({1} AS INT8)))"
+          rewrite: "(({0} IS NULL AND {1} IS NULL) OR ({1} ~ ''^-?[0-9]+$'' AND {0} = CAST({1} AS INT)))"
         - args:
             - "varchar"
             - "double"
