@@ -1,5 +1,8 @@
 # Dremio Snowflake Connector
 
+<img src="https://www.dremio.com/img/dremio-website.png" width="60"> <img src="https://www.snowflake.com/wp-content/themes/snowflake/img/snowflake-logo-blue@2x.png" width="200">
+
+
 [![Build Status](https://travis-ci.org/narendrans/dremio-snowflake.svg?branch=master)](https://travis-ci.org/narendrans/dremio-snowflake)
 
 <!--ts-->
@@ -71,6 +74,8 @@ You can then notice lines like below in server.log file after which you can revi
 ```diff
 - 2019-07-11 18:56:24,001 [22d879a7-ce3d-f2ca-f380-005a88865700/0:foreman-planning] DEBUG c.d.e.store.jdbc.dialect.arp.ArpYaml - Operator / not supported. Aborting pushdown.
 ```
+
+You can also take a look at the planning tab/visualized plan of the profile to determine if everything is pushed down or not.
 
 Contribution
 ------------
