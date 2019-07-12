@@ -10,6 +10,9 @@
    * [Development](#development)
       * [Building and Installation](#building-and-installation)
       * [Debugging](#debugging)
+   * [Contribution](#contribution)
+      * [Submitting an issue](#submitting-an-issue)
+      * [Pull Requests](#pull-requests)
 <!--te-->
 
 Overview
@@ -68,3 +71,19 @@ You can then notice lines like below in server.log file after which you can revi
 ```diff
 - 2019-07-11 18:56:24,001 [22d879a7-ce3d-f2ca-f380-005a88865700/0:foreman-planning] DEBUG c.d.e.store.jdbc.dialect.arp.ArpYaml - Operator / not supported. Aborting pushdown.
 ```
+
+Contribution
+------------
+
+### Submitting an issue
+
+* Go to the issue submission page: https://github.com/narendrans/dremio-snowflake/issues/new/choose. Please select an appropriate category and provide as much details as you can.
+
+### Pull Requests
+
+PRs are welcome. When submitting a PR make sure of the following:
+
+* Try to follow Google's Java style coding when modifying/creating Java related content.
+* Use a YAML linter to check the syntactic correctness of YAML file
+* Make sure the build passes
+* Run basic queries at least to ensure things are working properly
