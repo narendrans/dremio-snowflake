@@ -64,9 +64,9 @@ Debugging
 To debug pushdowns for queries set the following line in `logback.xml`
 
 ```
-<logger name="com.dremio.exec.store.jdbc.dialect.arp.ArpYaml">
-   <level value="${dremio.log.level:-debug}"/>
-</logger>
+  <logger name="com.dremio.exec.store.jdbc">
+    <level value="${dremio.log.level:-trace}"/>
+  </logger>
  ```
   
 You can then notice lines like below in server.log file after which you can revist the YAML file to add pushdowns based on [Snowflake SQL Reference](https://docs.snowflake.net/manuals/sql-reference-commands.html):
