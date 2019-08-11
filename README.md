@@ -43,11 +43,10 @@ Usage
 
 ### Required Parameters
 
-* Account name 
-    * A quick way to get this is to copy it from the URL - https://<ACCOUNT NAME>.snowflakecomputing.com/
+* JDBC URL
+    * Ex: jdbc:snowflake://<account_name>.snowflakecomputing.com/?param1=value&param2=value. [More details](https://docs.snowflake.net/manuals/user-guide/jdbc-configure.html).
 * Username, Password
     * The username and password with which you want to connect to Snowflake 
-
 
 ## Development
 
