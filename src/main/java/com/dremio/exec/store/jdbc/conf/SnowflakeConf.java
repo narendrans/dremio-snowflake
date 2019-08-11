@@ -65,13 +65,30 @@ public class SnowflakeConf extends AbstractArpConf<SnowflakeConf> {
   @NotMetadataImpacting
   public int fetchSize = 200;
 
+  @Tag(5)
+  @DisplayMetadata(label="Hostname")
+  public String hostname;
+
+  @Tag(6)
+  @DisplayMetadata(label="Warehouse")
+  public String warehouse;
+
   @VisibleForTesting
   public String toJdbcConnectionString() {
     final String accountName = checkNotNull(this.accountName, "Missing account name.");
     final String username = checkNotNull(this.username, "Missing username.");
     final String password = checkNotNull(this.password, "Missing password.");
 
-    return String.format("jdbc:snowflake://%s.snowflakecomputing.com", accountName);
+    final String hostname = checkNotNull(this.hostname, "Missing hostname name.");
+
+    StringBuilder sb = new StringBuilder();
+    sb.append(String.format("jdbc:snowflake://%s?account=%s", hostname,accountName));
+
+    if(!warehouse.isEmpty()) {
+      sb.append(String.format("&warehouse=%s", warehouse));
+    }
+
+    return sb.toString();
   }
 
   @Override
