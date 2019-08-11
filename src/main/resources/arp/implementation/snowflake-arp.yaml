@@ -18,7 +18,7 @@ metadata:
   # Manually Configured Metadata Section.
   name: SNOWFLAKE
   apiname: snowflake
-  spec_version: '1'
+  spec_version: '1.1'
 
 syntax:
   # Manually Configured Syntax Section.
@@ -140,6 +140,18 @@ data_types:
         name: "TIMESTAMP_TZ"
       dremio:
         name: "timestamp"
+    - source:
+        name: "TIMESTAMPLTZ"
+      dremio:
+        name: "timestamp"
+    - source:
+        name: "TIMESTAMPNTZ"
+      dremio:
+        name: "timestamp"
+    - source:
+        name: "TIMESTAMPTZ"
+      dremio:
+        name: "timestamp"
 
 relational_algebra:
   aggregation:
@@ -255,24 +267,24 @@ expressions:
           return: "bigint"
           rewrite: "CAST(TRUNC(CAST({0} AS DECIMAL), 0) AS BIGINT)"
     - names:
-        - "trim"
+        - "trim" #https://docs.snowflake.net/manuals/sql-reference/functions/trim.html
       signatures:
         - args:
             - "varchar"
           return: "varchar"
-    - names:
+    - names: #https://docs.snowflake.net/manuals/sql-reference/functions/ltrim.html
         - "ltrim"
       signatures:
         - args:
             - "varchar"
           return: "varchar"
-    - names:
+    - names: #https://docs.snowflake.net/manuals/sql-reference/functions/rtrim.html
         - "rtrim"
       signatures:
         - args:
             - "varchar"
           return: "varchar"
-    - names:
+    - names: #https://docs.snowflake.net/manuals/sql-reference/functions/sign.html
         - "sign"
       signatures:
         - args:
@@ -288,7 +300,7 @@ expressions:
             - "integer"
           return: "integer"
     - names:
-        - "floor"
+        - "floor" #https://docs.snowflake.net/manuals/sql-reference/functions/floor.html.
       signatures:
         - args:
             - "bigint"
@@ -1595,392 +1607,6 @@ expressions:
         - args:
             - "bigint"
           return: "boolean"
-    - names:
-        - "is distinct from"
-      signatures:
-        - args:
-            - "boolean"
-            - "boolean"
-          return: "boolean"
-          rewrite: "CASE WHEN ({0} IS NULL AND {1} IS NULL) OR ({0} = {1}) THEN 0 ELSE 1 END = 1 "
-        - args:
-            - "varbinary"
-            - "varbinary"
-          return: "boolean"
-          rewrite: "CASE WHEN ({0} IS NULL AND {1} IS NULL) OR ({0} = {1}) THEN 0 ELSE 1 END = 1 "
-        - args:
-            - "date"
-            - "date"
-          return: "boolean"
-          rewrite: "CASE WHEN ({0} IS NULL AND {1} IS NULL) OR ({0} = {1}) THEN 0 ELSE 1 END = 1 "
-        - args:
-            - "integer"
-            - "integer"
-          return: "boolean"
-          rewrite: "CASE WHEN ({0} IS NULL AND {1} IS NULL) OR ({0} = {1}) THEN 0 ELSE 1 END = 1 "
-        - args:
-            - "bigint"
-            - "bigint"
-          return: "boolean"
-          rewrite: "CASE WHEN ({0} IS NULL AND {1} IS NULL) OR ({0} = {1}) THEN 0 ELSE 1 END = 1 "
-        - args:
-            - "integer"
-            - "bigint"
-          return: "boolean"
-          rewrite: "CASE WHEN ({0} IS NULL AND {1} IS NULL) OR ({0} = {1}) THEN 0 ELSE 1 END = 1 "
-        - args:
-            - "bigint"
-            - "integer"
-          return: "boolean"
-          rewrite: "CASE WHEN ({0} IS NULL AND {1} IS NULL) OR ({0} = {1}) THEN 0 ELSE 1 END = 1 "
-        - args:
-            - "double"
-            - "double"
-          return: "boolean"
-          rewrite: "CASE WHEN ({0} IS NULL AND {1} IS NULL) OR ({0} = {1}) THEN 0 ELSE 1 END = 1 "
-        - args:
-            - "double"
-            - "integer"
-          return: "boolean"
-          rewrite: "CASE WHEN ({0} IS NULL AND {1} IS NULL) OR ({0} = {1}) THEN 0 ELSE 1 END = 1 "
-        - args:
-            - "integer"
-            - "double"
-          return: "boolean"
-          rewrite: "CASE WHEN ({0} IS NULL AND {1} IS NULL) OR ({0} = {1}) THEN 0 ELSE 1 END = 1 "
-        - args:
-            - "bigint"
-            - "double"
-          return: "boolean"
-          rewrite: "CASE WHEN ({0} IS NULL AND {1} IS NULL) OR ({0} = {1}) THEN 0 ELSE 1 END = 1 "
-        - args:
-            - "double"
-            - "bigint"
-          return: "boolean"
-          rewrite: "CASE WHEN ({0} IS NULL AND {1} IS NULL) OR ({0} = {1}) THEN 0 ELSE 1 END = 1 "
-        - args:
-            - "time"
-            - "time"
-          return: "boolean"
-          rewrite: "CASE WHEN ({0} IS NULL AND {1} IS NULL) OR ({0} = {1}) THEN 0 ELSE 1 END = 1 "
-        - args:
-            - "timestamp"
-            - "timestamp"
-          return: "boolean"
-          rewrite: "CASE WHEN ({0} IS NULL AND {1} IS NULL) OR ({0} = {1}) THEN 0 ELSE 1 END = 1 "
-        - args:
-            - "varchar"
-            - "varchar"
-          return: "boolean"
-          rewrite: "CASE WHEN ({0} IS NULL AND {1} IS NULL) OR ({0} = {1}) THEN 0 ELSE 1 END = 1 "
-        - args:
-            - "varchar"
-            - "integer"
-          return: "boolean"
-          rewrite: "CASE WHEN ({0} IS NULL AND {1} IS NULL) OR ({0} ~ ''^-?[0-9]+$'' AND CAST({0} AS INT) = {1}) THEN 0 ELSE 1 END = 1 "
-        - args:
-            - "integer"
-            - "varchar"
-          return: "boolean"
-          rewrite: "CASE WHEN ({0} IS NULL AND {1} IS NULL) OR ({1} ~ ''^-?[0-9]+$'' AND {0} = CAST({1} AS INT)) THEN 0 ELSE 1 END = 1 "
-        - args:
-            - "varchar"
-            - "bigint"
-          return: "boolean"
-          rewrite: "CASE WHEN ({0} IS NULL AND {1} IS NULL) OR ({0} ~ ''^-?[0-9]+$'' AND CAST({0} AS INT) = {1}) THEN 0 ELSE 1 END = 1 "
-        - args:
-            - "bigint"
-            - "varchar"
-          return: "boolean"
-          rewrite: "CASE WHEN ({0} IS NULL AND {1} IS NULL) OR ({1} ~ ''^-?[0-9]+$'' AND {0} = CAST({1} AS INT)) THEN 0 ELSE 1 END = 1 "
-        - args:
-            - "varchar"
-            - "double"
-          return: "boolean"
-          rewrite: "CASE WHEN ({0} IS NULL AND {1} IS NULL) OR ({0} ~ ''^[+\\-]?[0-9]+\\.?[0-9]*$'' AND CAST({0} AS FLOAT8) = {1}) THEN 0 ELSE 1 END = 1 "
-        - args:
-            - "double"
-            - "varchar"
-          return: "boolean"
-          rewrite: "CASE WHEN ({0} IS NULL AND {1} IS NULL) OR ({1} ~ ''^[+\\-]?[0-9]+\\.?[0-9]*$'' AND {0} = CAST({1} AS FLOAT8)) THEN 0 ELSE 1 END = 1 "
-        - args:
-            - "varchar"
-            - "timestamp"
-          return: "boolean"
-          rewrite: "CASE WHEN ({0} IS NULL AND {1} IS NULL) OR ({0} ~ ''^[0-9]+\\-[0-9][0-9]\\-[0-9][0-9]( [0-9]+:[0-9][0-9]:[0-9][0-9](\\.[0-9]+)?)?$'' AND CAST({0} AS TIMESTAMP) = {1}) THEN 0 ELSE 1 END = 1 "
-        - args:
-            - "timestamp"
-            - "varchar"
-          return: "boolean"
-          rewrite: "CASE WHEN ({0} IS NULL AND {1} IS NULL) OR ({1} ~ ''^[0-9]+\\-[0-9][0-9]\\-[0-9][0-9]( [0-9]+:[0-9][0-9]:[0-9][0-9](\\.[0-9]+)?)?$'' AND {0} = CAST({1} AS TIMESTAMP)) THEN 0 ELSE 1 END = 1 "
-        - args:
-            - "varchar"
-            - "time"
-          return: "boolean"
-          rewrite: "CASE WHEN ({0} IS NULL AND {1} IS NULL) OR ({0} ~ ''^[0-9]+:[0-9][0-9](:[0-9][0-9](\\.[0-9]+))?$'' AND CAST({0} AS TIME) = {1}) THEN 0 ELSE 1 END = 1 "
-        - args:
-            - "time"
-            - "varchar"
-          return: "boolean"
-          rewrite: "CASE WHEN ({0} IS NULL AND {1} IS NULL) OR ({1} ~ ''^[0-9]+:[0-9][0-9](:[0-9][0-9](\\.[0-9]+))?$'' AND {0} = CAST({1} AS TIME)) THEN 0 ELSE 1 END = 1 "
-        - args:
-            - "varchar"
-            - "date"
-          return: "boolean"
-          rewrite: "CASE WHEN ({0} IS NULL AND {1} IS NULL) OR ({0} ~ ''^[0-9]+\\-[0-9][0-9]\\-[0-9][0-9]( 00:00:00(.0+)?)?$'' AND CAST({0} AS DATE) = {1}) THEN 0 ELSE 1 END = 1 "
-        - args:
-            - "date"
-            - "varchar"
-          return: "boolean"
-          rewrite: "CASE WHEN ({0} IS NULL AND {1} IS NULL) OR ({1} ~ ''^[0-9]+\\-[0-9][0-9]\\-[0-9][0-9]( 00:00:00(.0+)?)?$'' AND {0} = CAST({1} AS DATE)) THEN 0 ELSE 1 END = 1 "
-        - args:
-            - "boolean"
-            - "varchar"
-          return: "boolean"
-          rewrite: "CASE WHEN ({0} IS NULL AND {1} IS NULL) OR (LOWER({1}) ~ ''^([tf01yn]|yes|no|true|false|on|off)$'' AND {0} = CAST({1} AS BOOLEAN)) THEN 0 ELSE 1 END = 1 "
-        - args:
-            - "varchar"
-            - "boolean"
-          return: "boolean"
-          rewrite: "CASE WHEN ({0} IS NULL AND {1} IS NULL) OR (LOWER({0}) ~ ''^([tf01yn]|yes|no|true|false|on|off)$'' AND CAST({0} AS BOOLEAN) = {1}) THEN 0 ELSE 1 END = 1 "
-        - args:
-            - "float"
-            - "float"
-          return: "boolean"
-          rewrite: "CASE WHEN ({0} IS NULL AND {1} IS NULL) OR ({0} = {1}) THEN 0 ELSE 1 END = 1 "
-        - args:
-            - "float"
-            - "integer"
-          return: "boolean"
-          rewrite: "CASE WHEN ({0} IS NULL AND {1} IS NULL) OR ({0} = {1}) THEN 0 ELSE 1 END = 1 "
-        - args:
-            - "integer"
-            - "float"
-          return: "boolean"
-          rewrite: "CASE WHEN ({0} IS NULL AND {1} IS NULL) OR ({0} = {1}) THEN 0 ELSE 1 END = 1 "
-        - args:
-            - "float"
-            - "bigint"
-          return: "boolean"
-          rewrite: "CASE WHEN ({0} IS NULL AND {1} IS NULL) OR ({0} = {1}) THEN 0 ELSE 1 END = 1 "
-        - args:
-            - "bigint"
-            - "float"
-          return: "boolean"
-          rewrite: "CASE WHEN ({0} IS NULL AND {1} IS NULL) OR ({0} = {1}) THEN 0 ELSE 1 END = 1 "
-        - args:
-            - "float"
-            - "double"
-          return: "boolean"
-          rewrite: "CASE WHEN ({0} IS NULL AND {1} IS NULL) OR ({0} = {1}) THEN 0 ELSE 1 END = 1 "
-        - args:
-            - "double"
-            - "float"
-          return: "boolean"
-          rewrite: "CASE WHEN ({0} IS NULL AND {1} IS NULL) OR ({0} = {1}) THEN 0 ELSE 1 END = 1 "
-        - args:
-            - "float"
-            - "varchar"
-          return: "boolean"
-          rewrite: "CASE WHEN ({0} IS NULL AND {1} IS NULL) OR ({1} ~ ''^[+\\-]?[0-9]+\\.?[0-9]*$'' AND {0} = CAST({1} AS FLOAT4)) THEN 0 ELSE 1 END = 1 "
-        - args:
-            - "varchar"
-            - "float"
-          return: "boolean"
-          rewrite: "CASE WHEN ({0} IS NULL AND {1} IS NULL) OR ({0} ~ ''^[+\\-]?[0-9]+\\.?[0-9]*$'' AND CAST({1} AS FLOAT4) = {1}) THEN 0 ELSE 1 END = 1 "
-    - names:
-        - "is not distinct from"
-      signatures:
-        - args:
-            - "boolean"
-            - "boolean"
-          return: "boolean"
-          rewrite: "(({0} IS NULL AND {1} IS NULL) OR ({0} = {1}))"
-        - args:
-            - "varbinary"
-            - "varbinary"
-          return: "boolean"
-          rewrite: "(({0} IS NULL AND {1} IS NULL) OR ({0} = {1}))"
-        - args:
-            - "date"
-            - "date"
-          return: "boolean"
-          rewrite: "(({0} IS NULL AND {1} IS NULL) OR ({0} = {1}))"
-        - args:
-            - "integer"
-            - "integer"
-          return: "boolean"
-          rewrite: "(({0} IS NULL AND {1} IS NULL) OR ({0} = {1}))"
-        - args:
-            - "bigint"
-            - "bigint"
-          return: "boolean"
-          rewrite: "(({0} IS NULL AND {1} IS NULL) OR ({0} = {1}))"
-        - args:
-            - "integer"
-            - "bigint"
-          return: "boolean"
-          rewrite: "(({0} IS NULL AND {1} IS NULL) OR ({0} = {1}))"
-        - args:
-            - "bigint"
-            - "integer"
-          return: "boolean"
-          rewrite: "(({0} IS NULL AND {1} IS NULL) OR ({0} = {1}))"
-        - args:
-            - "double"
-            - "double"
-          return: "boolean"
-          rewrite: "(({0} IS NULL AND {1} IS NULL) OR ({0} = {1}))"
-        - args:
-            - "double"
-            - "integer"
-          return: "boolean"
-          rewrite: "(({0} IS NULL AND {1} IS NULL) OR ({0} = {1}))"
-        - args:
-            - "integer"
-            - "double"
-          return: "boolean"
-          rewrite: "(({0} IS NULL AND {1} IS NULL) OR ({0} = {1}))"
-        - args:
-            - "bigint"
-            - "double"
-          return: "boolean"
-          rewrite: "(({0} IS NULL AND {1} IS NULL) OR ({0} = {1}))"
-        - args:
-            - "double"
-            - "bigint"
-          return: "boolean"
-          rewrite: "(({0} IS NULL AND {1} IS NULL) OR ({0} = {1}))"
-        - args:
-            - "time"
-            - "time"
-          return: "boolean"
-          rewrite: "(({0} IS NULL AND {1} IS NULL) OR ({0} = {1}))"
-        - args:
-            - "timestamp"
-            - "timestamp"
-          return: "boolean"
-          rewrite: "(({0} IS NULL AND {1} IS NULL) OR ({0} = {1}))"
-        - args:
-            - "varchar"
-            - "varchar"
-          return: "boolean"
-          rewrite: "(({0} IS NULL AND {1} IS NULL) OR ({0} = {1}))"
-        - args:
-            - "varchar"
-            - "integer"
-          return: "boolean"
-          rewrite: "(({0} IS NULL AND {1} IS NULL) OR ({0} ~ ''^-?[0-9]+$'' AND CAST({0} AS INT) = {1}))"
-        - args:
-            - "integer"
-            - "varchar"
-          return: "boolean"
-          rewrite: "(({0} IS NULL AND {1} IS NULL) OR ({1} ~ ''^-?[0-9]+$'' AND {0} = CAST({1} AS INT)))"
-        - args:
-            - "varchar"
-            - "bigint"
-          return: "boolean"
-          rewrite: "(({0} IS NULL AND {1} IS NULL) OR ({0} ~ ''^-?[0-9]+$'' AND CAST({0} AS INT) = {1}))"
-        - args:
-            - "bigint"
-            - "varchar"
-          return: "boolean"
-          rewrite: "(({0} IS NULL AND {1} IS NULL) OR ({1} ~ ''^-?[0-9]+$'' AND {0} = CAST({1} AS INT)))"
-        - args:
-            - "varchar"
-            - "double"
-          return: "boolean"
-          rewrite: "(({0} IS NULL AND {1} IS NULL) OR ({0} ~ ''^[+\\-]?[0-9]+\\.?[0-9]*$'' AND CAST({0} AS FLOAT8) = {1}))"
-        - args:
-            - "double"
-            - "varchar"
-          return: "boolean"
-          rewrite: "(({0} IS NULL AND {1} IS NULL) OR ({1} ~ ''^[+\\-]?[0-9]+\\.?[0-9]*$'' AND {0} = CAST({1} AS FLOAT8)))"
-        - args:
-            - "varchar"
-            - "timestamp"
-          return: "boolean"
-          rewrite: "(({0} IS NULL AND {1} IS NULL) OR ({0} ~ ''^[0-9]+\\-[0-9][0-9]\\-[0-9][0-9]( [0-9]+:[0-9][0-9]:[0-9][0-9](\\.[0-9]+)?)?$'' AND CAST({0} AS TIMESTAMP) = {1}))"
-        - args:
-            - "timestamp"
-            - "varchar"
-          return: "boolean"
-          rewrite: "(({0} IS NULL AND {1} IS NULL) OR ({1} ~ ''^[0-9]+\\-[0-9][0-9]\\-[0-9][0-9]( [0-9]+:[0-9][0-9]:[0-9][0-9](\\.[0-9]+)?)?$'' AND {0} = CAST({1} AS TIMESTAMP)))"
-        - args:
-            - "varchar"
-            - "time"
-          return: "boolean"
-          rewrite: "(({0} IS NULL AND {1} IS NULL) OR ({0} ~ ''^[0-9]+:[0-9][0-9](:[0-9][0-9](\\.[0-9]+))?$'' AND CAST({0} AS TIME) = {1}))"
-        - args:
-            - "time"
-            - "varchar"
-          return: "boolean"
-          rewrite: "(({0} IS NULL AND {1} IS NULL) OR ({1} ~ ''^[0-9]+:[0-9][0-9](:[0-9][0-9](\\.[0-9]+))?$'' AND {0} = CAST({1} AS TIME)))"
-        - args:
-            - "varchar"
-            - "date"
-          return: "boolean"
-          rewrite: "(({0} IS NULL AND {1} IS NULL) OR ({0} ~ ''^[0-9]+\\-[0-9][0-9]\\-[0-9][0-9]( 00:00:00(.0+)?)?$'' AND CAST({0} AS DATE) = {1}))"
-        - args:
-            - "date"
-            - "varchar"
-          return: "boolean"
-          rewrite: "(({0} IS NULL AND {1} IS NULL) OR ({1} ~ ''^[0-9]+\\-[0-9][0-9]\\-[0-9][0-9]( 00:00:00(.0+)?)?$'' AND {0} = CAST({1} AS DATE)))"
-        - args:
-            - "boolean"
-            - "varchar"
-          return: "boolean"
-          rewrite: "(({0} IS NULL AND {1} IS NULL) OR (LOWER({1}) ~ ''^([tf01yn]|yes|no|true|false|on|off)$'' AND {0} = CAST({1} AS BOOLEAN)))"
-        - args:
-            - "varchar"
-            - "boolean"
-          return: "boolean"
-          rewrite: "(({0} IS NULL AND {1} IS NULL) OR (LOWER({0}) ~ ''^([tf01yn]|yes|no|true|false|on|off)$'' AND CAST({0} AS BOOLEAN) = {1}))"
-        - args:
-            - "float"
-            - "float"
-          return: "boolean"
-          rewrite: "(({0} IS NULL AND {1} IS NULL) OR ({0} = {1}))"
-        - args:
-            - "float"
-            - "integer"
-          return: "boolean"
-          rewrite: "(({0} IS NULL AND {1} IS NULL) OR ({0} = {1}))"
-        - args:
-            - "integer"
-            - "float"
-          return: "boolean"
-          rewrite: "(({0} IS NULL AND {1} IS NULL) OR ({0} = {1}))"
-        - args:
-            - "float"
-            - "bigint"
-          return: "boolean"
-          rewrite: "(({0} IS NULL AND {1} IS NULL) OR ({0} = {1}))"
-        - args:
-            - "bigint"
-            - "float"
-          return: "boolean"
-          rewrite: "(({0} IS NULL AND {1} IS NULL) OR ({0} = {1}))"
-        - args:
-            - "float"
-            - "double"
-          return: "boolean"
-          rewrite: "(({0} IS NULL AND {1} IS NULL) OR ({0} = {1}))"
-        - args:
-            - "double"
-            - "float"
-          return: "boolean"
-          rewrite: "(({0} IS NULL AND {1} IS NULL) OR ({0} = {1}))"
-        - args:
-            - "float"
-            - "varchar"
-          return: "boolean"
-          rewrite: "(({0} IS NULL AND {1} IS NULL) OR ({1} ~ ''^[+\\-]?[0-9]+\\.?[0-9]*$'' AND {0} = CAST({1} AS FLOAT4)))"
-        - args:
-            - "varchar"
-            - "float"
-          return: "boolean"
-          rewrite: "(({0} IS NULL AND {1} IS NULL) OR ({0} ~ ''^[+\\-]?[0-9]+\\.?[0-9]*$'' AND CAST({1} AS FLOAT4) = {1}))"
     - names:
         - "="
       signatures:

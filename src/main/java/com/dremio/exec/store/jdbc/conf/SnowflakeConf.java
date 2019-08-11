@@ -43,18 +43,19 @@ public class SnowflakeConf extends AbstractArpConf<SnowflakeConf> {
       AbstractArpConf.loadArpFile(ARP_FILENAME, (ArpDialect::new));
   private static final String DRIVER = "net.snowflake.client.jdbc.SnowflakeDriver";
 
+  /*
+     Check Snowflake JDBC connection docs for more details: https://docs.snowflake.net/manuals/user-guide/jdbc-configure.html
+   */
   @NotBlank
   @Tag(1)
-  @DisplayMetadata(label = "Account")
-  public String accountName;
+  @DisplayMetadata(label = "JDBC URL (Ex: jdbc:snowflake://<account_name>.snowflakecomputing.com/?param1=value&param2=value)")
+  public String jdbcURL;
 
-  @NotBlank
   @Tag(2)
   @DisplayMetadata(label = "Username")
   public String username;
 
 
-  @NotBlank
   @Tag(3)
   @Secret
   @DisplayMetadata(label = "Password")
@@ -63,15 +64,12 @@ public class SnowflakeConf extends AbstractArpConf<SnowflakeConf> {
   @Tag(4)
   @DisplayMetadata(label = "Record fetch size")
   @NotMetadataImpacting
-  public int fetchSize = 200;
+  public int fetchSize = 2000;
 
   @VisibleForTesting
   public String toJdbcConnectionString() {
-    final String accountName = checkNotNull(this.accountName, "Missing account name.");
-    final String username = checkNotNull(this.username, "Missing username.");
-    final String password = checkNotNull(this.password, "Missing password.");
-
-    return String.format("jdbc:snowflake://%s.snowflakecomputing.com", accountName);
+    checkNotNull(this.jdbcURL, "JDBC URL is required");
+    return jdbcURL;
   }
 
   @Override
@@ -88,7 +86,7 @@ public class SnowflakeConf extends AbstractArpConf<SnowflakeConf> {
 
   private CloseableDataSource newDataSource() {
     return DataSources.newGenericConnectionPoolDataSource(DRIVER,
-      toJdbcConnectionString(), username, password, null, DataSources.CommitMode.DRIVER_SPECIFIED_COMMIT_MODE);
+        toJdbcConnectionString(), username, password, null, DataSources.CommitMode.DRIVER_SPECIFIED_COMMIT_MODE);
   }
 
   @Override
