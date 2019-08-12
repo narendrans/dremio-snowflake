@@ -115,6 +115,15 @@ data_types:
       dremio:
         name: "varchar"
 
+    #------------Binary--------------#
+    # https://docs.snowflake.net/manuals/sql-reference/data-types-text.html#binary
+    - source:
+        name: "binary"
+        max_precision: 8388608
+        literal_length_limit: 8388608
+      required_cast_args: "precision"
+      dremio:
+        name: "varbinary"
     #------------Date types--------------#
     - source:
         name: "DATE"
