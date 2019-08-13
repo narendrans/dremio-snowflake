@@ -12,6 +12,7 @@
    * [Usage](#usage)
    * [Development](#development)
       * [Building and Installation](#building-and-installation)
+      * [Building a Docker image](#building-a-docker-image)
       * [Debugging](#debugging)
    * [Contribution](#contribution)
       * [Submitting an issue](#submitting-an-issue)
@@ -57,6 +58,25 @@ Building and Installation
 2. Take the resulting .jar file in the target folder and put it in the <DREMIO_HOME>\jars folder in Dremio
 3. Download the Snowflake JDBC driver from (https://mvnrepository.com/artifact/net.snowflake/snowflake-jdbc/3.8.6 and click on the JAR link) and put in in the <DREMIO_HOME>\jars\3rdparty folder
 4. Restart Dremio
+
+Building a Docker image
+-------
+
+Dockerfile:
+
+```
+FROM dremio/dremio-oss
+USER root
+RUN cd /opt/dremio/jars && wget https://repo1.maven.org/maven2/net/snowflake/snowflake-jdbc/3.8.8/snowflake-jdbc-3.8.8.jar && wget https://github.com/narendrans/dremio-snowflake/releases/download/1.2/dremio-snowflake-plugin-3.3.1-201907291852280797-df23756.jar && chown dremio snowflake-jdbc-3.8.8.jar dremio-snowflake-plugin-3.3.1-201907291852280797-df23756.jar
+```
+
+Build:
+
+`docker build . -t dremio-snowflake`
+
+Run:
+
+`docker run -p 9047:9047 -p 31010:31010 dremio-snowflake`
 
 Debugging
 -----------
