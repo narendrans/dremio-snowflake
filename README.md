@@ -4,6 +4,11 @@
 
 
 [![Build Status](https://travis-ci.org/narendrans/dremio-snowflake.svg?branch=master)](https://travis-ci.org/narendrans/dremio-snowflake)
+![Last Commit](https://img.shields.io/github/last-commit/narendrans/dremio-snowflake)
+
+
+![License](https://img.shields.io/badge/license-Apache%202-blue)
+![Platform](https://img.shields.io/badge/platform-linux%20%7C%20macos%20%7C%20windows-blue)
 
 <!--ts-->
    * [Overview](#overview)
