@@ -3,6 +3,7 @@
 <img src="https://www.dremio.com/img/dremio-website.png" width="60"> <img src="https://www.snowflake.com/wp-content/themes/snowflake/img/snowflake-logo-blue@2x.png" width="200">
 
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/ecc264fe94074379afc080f2e1549630)](https://app.codacy.com/app/narendrans/dremio-snowflake?utm_source=github.com&utm_medium=referral&utm_content=narendrans/dremio-snowflake&utm_campaign=Badge_Grade_Dashboard)
 [![Build Status](https://travis-ci.org/narendrans/dremio-snowflake.svg?branch=master)](https://travis-ci.org/narendrans/dremio-snowflake)
 ![Last Commit](https://img.shields.io/github/last-commit/narendrans/dremio-snowflake)
 
