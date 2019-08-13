@@ -161,6 +161,12 @@ data_types:
         name: "TIMESTAMPTZ"
       dremio:
         name: "timestamp"
+    #------------ Snowflake's complex VARIANT type (JSON) is mapped to Dremio's VARCHAR. -------------#
+    #------------ You can use convert_from(<field>, 'JSON') in Dremio to treat it as a JSON -------------#
+    - source:
+        name: "VARIANT"
+      dremio:
+        name: "VARCHAR"
 
 relational_algebra:
   aggregation:
