@@ -18,7 +18,7 @@ metadata:
   # Manually Configured Metadata Section.
   name: SNOWFLAKE
   apiname: snowflake
-  spec_version: '1.1'
+  spec_version: '1.3'
 
 syntax:
   # Manually Configured Syntax Section.
