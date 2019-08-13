@@ -32,6 +32,13 @@ syntax:
 # https://docs.snowflake.net/manuals/sql-reference/intro-summary-data-types.html
 data_types:
   mappings:
+    #------------Boolean types--------------#
+    - source:
+        name: "BOOLEAN"
+      dremio:
+        name: "boolean"
+
+
     #------------Numeric types--------------#
     - source:
         name: "NUMERIC"
