@@ -20,7 +20,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.dremio.plugin</groupId>
+  <groupId>com.dremio.plugins</groupId>
   <version>3.3.1-201907291852280797-df23756</version>
   <artifactId>dremio-snowflake-plugin</artifactId>
   <name>Dremio Snowflake Community Connector</name>
