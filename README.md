@@ -6,7 +6,7 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/ecc264fe94074379afc080f2e1549630)](https://app.codacy.com/app/narendrans/dremio-snowflake?utm_source=github.com&utm_medium=referral&utm_content=narendrans/dremio-snowflake&utm_campaign=Badge_Grade_Dashboard)
 [![Build Status](https://travis-ci.org/narendrans/dremio-snowflake.svg?branch=master)](https://travis-ci.org/narendrans/dremio-snowflake)
 ![Last Commit](https://img.shields.io/github/last-commit/narendrans/dremio-snowflake)
-
+[![Docker build](https://img.shields.io/docker/cloud/build/narendrans/dremio-snowflake.svg)](https://hub.docker.com/r/narendrans/dremio-snowflake/builds)
 
 ![License](https://img.shields.io/badge/license-Apache%202-blue)
 ![Platform](https://img.shields.io/badge/platform-linux%20%7C%20macos%20%7C%20windows-blue)
