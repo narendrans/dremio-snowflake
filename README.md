@@ -41,7 +41,9 @@ Downloading a Release
 -----------
 
 * To download a release, [click here](https://github.com/narendrans/dremio-snowflake/releases)
+* To test it using Docker, run the following command:
 
+`docker run -p 9047:9047 -p 31010:31010 narendrans/dremio-snowflake`
 
 Usage
 -----------
