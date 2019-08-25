@@ -7,8 +7,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
-import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -23,29 +21,28 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
-public class ConnectivityTest {
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+public class SnowflakeTest {
 
-  private static Logger log = Logger.getLogger(ConnectivityTest.class);
+  private static Logger log = Logger.getLogger(SnowflakeTest.class);
 
-  /* Dremio connection settings */
-  private final String URL = "http://localhost:9047/";
-  private final String dremioUser = "dremio";
-  private final String dremioPassword = "dremio123";
 
   /* Snowflake connection settings */
 
-  String authToken = "_dremio";
+  private static String authToken = "_dremio";
 
-  private final String jdbcURL = System.getenv("SNOWFLAKE_JDBC_URL");
-  private final String snowflakeUser = System.getenv("SNOWFLAKE_USER");
-  private final String snowflakePassword = System.getenv("SNOWFLAKE_PASSWORD");
+  private static final String jdbcURL = System.getenv("SNOWFLAKE_JDBC_URL");
+  private static final String snowflakeUser = System.getenv("SNOWFLAKE_USER");
+  private static final String snowflakePassword = System.getenv("SNOWFLAKE_PASSWORD");
 
-  @Before
-  public void setup() throws IOException, SQLException {
+  @BeforeClass
+  public static void setup() throws IOException, SQLException {
 
     log.info("Dremio: Get authentication token");
     CloseableHttpClient client = HttpClients.createDefault();
@@ -73,7 +70,7 @@ public class ConnectivityTest {
 
     Statement statement = DriverManager.getConnection(jdbcURL, properties).createStatement();
 
-    String sqls[] = FileUtils
+    String[] sqls = FileUtils
         .readFileToString(new File(new File("src/test/resources/DDL.sql").getPath()),
             StandardCharsets.UTF_8).split(";");
 
@@ -81,16 +78,11 @@ public class ConnectivityTest {
     statement.executeUpdate(sqls[0]);
     statement.executeUpdate(sqls[1]);
 
-  }
-
-  @Test
-  public void connectivityTest() throws IOException {
-
     log.info("Dremio: Create Snowflake datasource");
-    CloseableHttpClient client = HttpClients.createDefault();
+    CloseableHttpClient createSourceClient = HttpClients.createDefault();
     HttpPut httpPut = new HttpPut("http://localhost:9047/apiv2/source/snowflake");
 
-    String json = String.format("{\n"
+    String jsonPayload = String.format("{\n"
         + "    \"name\": \"snowflake\",\n"
         + "    \"config\": {\n"
         + "        \"jdbcURL\": \"%s\",\n"
@@ -115,24 +107,54 @@ public class ConnectivityTest {
         + "    \"type\": \"SNOWFLAKE\"\n"
         + "}", jdbcURL, snowflakeUser, snowflakePassword);
 
-    httpPut.setEntity(new StringEntity(json));
+    httpPut.setEntity(new StringEntity(jsonPayload));
     httpPut.setHeader("Content-type", "application/json");
     httpPut.setHeader("Authorization", authToken);
 
-    CloseableHttpResponse response = client.execute(httpPut);
 
-    assertEquals(200, response.getStatusLine().getStatusCode());
+    assertEquals(200, createSourceClient.execute(httpPut).getStatusLine().getStatusCode());
+
 
     client.close();
 
   }
 
-  @After
-  public void cleanUp() throws IOException, SQLException {
-    log.info("Removing Snowflake datasource");
+  //TODO: Replace with JDBC calls
+  @Test
+  public void queryTest() throws IOException {
+    log.info("Dremio: SELECT * FROM all_types");
+    CloseableHttpClient client = HttpClients.createDefault();
+    HttpPost httpPost = new HttpPost("http://localhost:9047/api/v3/sql");
+
+    String queryJson = "{\"sql\": \"SELECT * FROM \\\"snowflake\\\".\\\"DEMO_DB\\\".\\\"PUBLIC\\\".\\\"all_types\\\"\"}";
+
+    httpPost.setEntity(new StringEntity(queryJson));
+    httpPost.setHeader("Content-type", "application/json");
+    httpPost.setHeader("Authorization", authToken);
+
+
+    CloseableHttpResponse response = client.execute(httpPost);
+
+    assertEquals(200, response.getStatusLine().getStatusCode());
+
+    String jobId = new ObjectMapper()
+        .readTree(EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8)).
+            findValue("id").asText();
+    log.info("Submitted Job ID: " + jobId);
+
+    //TODO: Get results from Job and verify returned data
+  }
+
+  @AfterClass
+  public static void cleanUp() throws IOException, SQLException, InterruptedException {
+
+    log.info("Dremio: Removing Snowflake data source in 5 seconds");
+    //TODO: Remove the wait after using JDBC instead of REST
+    Thread.sleep(5000);
+
     CloseableHttpClient client = HttpClients.createDefault();
     HttpDelete httpDelete = new HttpDelete(
-        "http://localhost:9047/apiv2/source/snowflake?version=1");
+        "http://localhost:9047/apiv2/source/snowflake?version=0");
 
     httpDelete.setHeader("Content-type", "application/json");
     httpDelete.setHeader("Authorization", authToken);
