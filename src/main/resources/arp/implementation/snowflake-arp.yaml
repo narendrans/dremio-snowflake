@@ -131,6 +131,7 @@ data_types:
       required_cast_args: "precision"
       dremio:
         name: "varbinary"
+
     #------------Date types--------------#
     - source:
         name: "DATE"
@@ -2225,102 +2226,86 @@ expressions:
             - "time"
             - "varchar"
           return: "varchar"
-          rewrite: "CASE WHEN {0} IS NULL OR {1} IS NULL THEN NULL ELSE CONCAT({0}, {1}) END "
         - args:
             - "varchar"
             - "date"
           return: "varchar"
-          rewrite: "CASE WHEN {0} IS NULL OR {1} IS NULL THEN NULL ELSE CONCAT({0}, {1}) END "
         - args:
             - "varchar"
             - "float"
           return: "varchar"
-          rewrite: "CASE WHEN {0} IS NULL OR {1} IS NULL THEN NULL ELSE CONCAT({0}, {1}) END "
         - args:
             - "varchar"
             - "timestamp"
           return: "varchar"
-          rewrite: "CASE WHEN {0} IS NULL OR {1} IS NULL THEN NULL ELSE CONCAT({0}, {1}) END "
         - args:
             - "varchar"
             - "varchar"
           return: "varchar"
-          rewrite: "CASE WHEN {0} IS NULL OR {1} IS NULL THEN NULL ELSE CONCAT({0}, {1}) END "
         - args:
             - "varchar"
             - "integer"
           return: "varchar"
-          rewrite: "CASE WHEN {0} IS NULL OR {1} IS NULL THEN NULL ELSE CONCAT({0}, {1}) END "
         - args:
             - "varchar"
             - "boolean"
           return: "varchar"
-          rewrite: "CASE WHEN {0} IS NULL OR {1} IS NULL THEN NULL ELSE CONCAT({0}, {1}) END "
         - args:
             - "varchar"
             - "varbinary"
           return: "varchar"
-          rewrite: "CASE WHEN {0} IS NULL OR {1} IS NULL THEN NULL ELSE CONCAT({0}, {1}) END "
         - args:
             - "varchar"
             - "time"
           return: "varchar"
-          rewrite: "CASE WHEN {0} IS NULL OR {1} IS NULL THEN NULL ELSE CONCAT({0}, {1}) END "
         - args:
             - "boolean"
             - "varchar"
           return: "varchar"
-          rewrite: "CASE WHEN {0} IS NULL OR {1} IS NULL THEN NULL ELSE CONCAT({0}, {1}) END "
         - args:
             - "varchar"
             - "double"
           return: "varchar"
-          rewrite: "CASE WHEN {0} IS NULL OR {1} IS NULL THEN NULL ELSE CONCAT({0}, {1}) END "
         - args:
             - "float"
             - "varchar"
           return: "varchar"
-          rewrite: "CASE WHEN {0} IS NULL OR {1} IS NULL THEN NULL ELSE CONCAT({0}, {1}) END "
         - args:
             - "bigint"
             - "varchar"
           return: "varchar"
-          rewrite: "CASE WHEN {0} IS NULL OR {1} IS NULL THEN NULL ELSE CONCAT({0}, {1}) END "
         - args:
             - "varbinary"
             - "varbinary"
           return: "varbinary"
-          rewrite: "CASE WHEN {0} IS NULL OR {1} IS NULL THEN NULL ELSE CONCAT({0}, {1}) END "
         - args:
             - "varbinary"
             - "varchar"
           return: "varchar"
-          rewrite: "CASE WHEN {0} IS NULL OR {1} IS NULL THEN NULL ELSE CONCAT({0}, {1}) END "
         - args:
             - "timestamp"
             - "varchar"
           return: "varchar"
-          rewrite: "CASE WHEN {0} IS NULL OR {1} IS NULL THEN NULL ELSE CONCAT({0}, {1}) END "
         - args:
             - "double"
             - "varchar"
           return: "varchar"
-          rewrite: "CASE WHEN {0} IS NULL OR {1} IS NULL THEN NULL ELSE CONCAT({0}, {1}) END "
         - args:
             - "date"
             - "varchar"
           return: "varchar"
-          rewrite: "CASE WHEN {0} IS NULL OR {1} IS NULL THEN NULL ELSE CONCAT({0}, {1}) END "
         - args:
             - "varchar"
             - "bigint"
           return: "varchar"
-          rewrite: "CASE WHEN {0} IS NULL OR {1} IS NULL THEN NULL ELSE CONCAT({0}, {1}) END "
         - args:
             - "integer"
             - "varchar"
           return: "varchar"
-          rewrite: "CASE WHEN {0} IS NULL OR {1} IS NULL THEN NULL ELSE CONCAT({0}, {1}) END "
+        - args:
+            - "double"
+            - "double"
+          return: "varchar"
     - names:
         - "or"
       signatures:

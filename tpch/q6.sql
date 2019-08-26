@@ -1,3 +1,4 @@
+-- Taken from https://github.com/dremio/dremio-oss/blob/master/sabot/kernel/src/test/resources/queries/tpch/
 select
   sum(l_extendedprice * l_discount) as revenue
 from

@@ -1,3 +1,4 @@
+-- Taken from https://github.com/dremio/dremio-oss/blob/master/sabot/kernel/src/test/resources/queries/tpch/
 select
   o.o_orderpriority,
   count(*) as order_count

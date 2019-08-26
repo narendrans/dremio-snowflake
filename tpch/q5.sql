@@ -1,3 +1,4 @@
+-- Taken from https://github.com/dremio/dremio-oss/blob/master/sabot/kernel/src/test/resources/queries/tpch/
 select
   n.n_name,
   sum(l.l_extendedprice * (1 - l.l_discount)) as revenue

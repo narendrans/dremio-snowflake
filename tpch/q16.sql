@@ -1,3 +1,4 @@
+-- Taken from https://github.com/dremio/dremio-oss/blob/master/sabot/kernel/src/test/resources/queries/tpch/
 select
   p.p_brand,
   p.p_type,

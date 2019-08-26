@@ -1,3 +1,4 @@
+-- Taken from https://github.com/dremio/dremio-oss/blob/master/sabot/kernel/src/test/resources/queries/tpch/
 select
   ps.ps_partkey,
   sum(ps.ps_supplycost * ps.ps_availqty) as "value"
