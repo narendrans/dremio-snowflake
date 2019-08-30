@@ -18,6 +18,7 @@ package com.dremio.exec.store.jdbc.conf;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.dremio.exec.catalog.conf.Secret;
+import org.apache.log4j.Logger;
 import org.hibernate.validator.constraints.NotBlank;
 
 import com.dremio.exec.catalog.conf.DisplayMetadata;
@@ -42,6 +43,8 @@ public class SnowflakeConf extends AbstractArpConf<SnowflakeConf> {
   private static final ArpDialect ARP_DIALECT =
       AbstractArpConf.loadArpFile(ARP_FILENAME, (ArpDialect::new));
   private static final String DRIVER = "net.snowflake.client.jdbc.SnowflakeDriver";
+
+  private static Logger logger = Logger.getLogger(SnowflakeConf.class);
 
   /*
      Check Snowflake JDBC connection docs for more details: https://docs.snowflake.net/manuals/user-guide/jdbc-configure.html
@@ -75,6 +78,7 @@ public class SnowflakeConf extends AbstractArpConf<SnowflakeConf> {
   @Override
   @VisibleForTesting
   public Config toPluginConfig(SabotContext context) {
+    logger.info("Connecting to Snowflake");
     return JdbcStoragePlugin.Config.newBuilder()
         .withDialect(getDialect())
         .withFetchSize(fetchSize)

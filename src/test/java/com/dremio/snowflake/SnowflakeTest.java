@@ -7,7 +7,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
@@ -37,7 +39,7 @@ public class SnowflakeTest {
 
   private static String authToken = "_dremio";
 
-  private static final String jdbcURL = System.getenv("SNOWFLAKE_JDBC_URL");
+  private static final String snowflakeJdbcURL = System.getenv("SNOWFLAKE_JDBC_URL");
   private static final String snowflakeUser = System.getenv("SNOWFLAKE_USER");
   private static final String snowflakePassword = System.getenv("SNOWFLAKE_PASSWORD");
 
@@ -68,7 +70,8 @@ public class SnowflakeTest {
     properties.put("user", snowflakeUser);
     properties.put("password", snowflakePassword);
 
-    Statement statement = DriverManager.getConnection(jdbcURL, properties).createStatement();
+    Statement statement = DriverManager.getConnection(snowflakeJdbcURL, properties)
+        .createStatement();
 
     String[] sqls = FileUtils
         .readFileToString(new File(new File("src/test/resources/DDL.sql").getPath()),
@@ -105,56 +108,74 @@ public class SnowflakeTest {
         + "        \"groupControls\": []\n"
         + "    },\n"
         + "    \"type\": \"SNOWFLAKE\"\n"
-        + "}", jdbcURL, snowflakeUser, snowflakePassword);
+        + "}", snowflakeJdbcURL, snowflakeUser, snowflakePassword);
 
     httpPut.setEntity(new StringEntity(jsonPayload));
     httpPut.setHeader("Content-type", "application/json");
     httpPut.setHeader("Authorization", authToken);
 
-
     assertEquals(200, createSourceClient.execute(httpPut).getStatusLine().getStatusCode());
-
 
     client.close();
 
   }
 
-  //TODO: Replace with JDBC calls
+
   @Test
-  public void queryTest() throws IOException {
+  public void queryTest() throws IOException, SQLException {
     log.info("Dremio: SELECT * FROM all_types");
-    CloseableHttpClient client = HttpClients.createDefault();
-    HttpPost httpPost = new HttpPost("http://localhost:9047/api/v3/sql");
 
-    String queryJson = "{\"sql\": \"SELECT * FROM \\\"snowflake\\\".\\\"DEMO_DB\\\".\\\"PUBLIC\\\".\\\"all_types\\\"\"}";
+    // Get resultset from Dremio
+    Connection dremioConnection = DriverManager
+        .getConnection("jdbc:dremio:direct=localhost;user=dremio;password=dremio123");
 
-    httpPost.setEntity(new StringEntity(queryJson));
-    httpPost.setHeader("Content-type", "application/json");
-    httpPost.setHeader("Authorization", authToken);
+    Statement dremioStatement = dremioConnection.createStatement();
+
+    ResultSet dremioRs = dremioStatement
+        .executeQuery("SELECT * FROM snowflake.\"DEMO_DB\".\"PUBLIC\".all_types");
+    dremioRs.next();
+
+    // Get resultset from Snowflake
+    Properties properties = new Properties();
+    properties.put("user", snowflakeUser);
+    properties.put("password", snowflakePassword);
+    Connection snowflakeConnection = DriverManager
+        .getConnection(snowflakeJdbcURL, properties);
+
+    Statement snowflakeStatement = snowflakeConnection.createStatement();
+
+    ResultSet snowflakeRs = snowflakeStatement
+        .executeQuery("SELECT * FROM \"DEMO_DB\".\"PUBLIC\".\"all_types\"");
+    snowflakeRs.next();
+
+    // Compare
+    assertEquals(dremioRs.getString("M"), snowflakeRs.getString("M"));
+    assertEquals(dremioRs.getString("N"), snowflakeRs.getString("N"));
+    assertEquals(dremioRs.getString("O"), snowflakeRs.getString("O"));
+    assertEquals(dremioRs.getString("P"), snowflakeRs.getString("P"));
 
 
-    CloseableHttpResponse response = client.execute(httpPost);
+    assertEquals(dremioRs.getDouble("G"), snowflakeRs.getDouble("G"),0.1);
+    assertEquals(dremioRs.getDouble("H"), snowflakeRs.getDouble("H"),0.1);
+    assertEquals(dremioRs.getDouble("I"), snowflakeRs.getDouble("I"),0.1);
+    assertEquals(dremioRs.getDouble("J"), snowflakeRs.getDouble("J"),0.1);
+    assertEquals(dremioRs.getDouble("K"), snowflakeRs.getDouble("K"),0.1);
+    assertEquals(dremioRs.getDouble("L"), snowflakeRs.getDouble("L"),0.1);
 
-    assertEquals(200, response.getStatusLine().getStatusCode());
+    assertEquals(dremioRs.getTimestamp("S"), snowflakeRs.getTimestamp("S"));
+    assertEquals(dremioRs.getTimestamp("U"), snowflakeRs.getTimestamp("U"));
 
-    String jobId = new ObjectMapper()
-        .readTree(EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8)).
-            findValue("id").asText();
-    log.info("Submitted Job ID: " + jobId);
 
-    //TODO: Get results from Job and verify returned data
   }
 
   @AfterClass
   public static void cleanUp() throws IOException, SQLException, InterruptedException {
 
     log.info("Dremio: Removing Snowflake data source in 5 seconds");
-    //TODO: Remove the wait after using JDBC instead of REST
-    Thread.sleep(5000);
 
     CloseableHttpClient client = HttpClients.createDefault();
     HttpDelete httpDelete = new HttpDelete(
-        "http://localhost:9047/apiv2/source/snowflake?version=0");
+        "http://localhost:9047/apiv2/source/snowflake?version=1");
 
     httpDelete.setHeader("Content-type", "application/json");
     httpDelete.setHeader("Authorization", authToken);
@@ -168,7 +189,8 @@ public class SnowflakeTest {
     properties.put("user", snowflakeUser);
     properties.put("password", snowflakePassword);
 
-    Statement statement = DriverManager.getConnection(jdbcURL, properties).createStatement();
+    Statement statement = DriverManager.getConnection(snowflakeJdbcURL, properties)
+        .createStatement();
     statement.executeUpdate("DROP TABLE \"DEMO_DB\".\"PUBLIC\".\"all_types\"");
   }
 }

@@ -18,7 +18,7 @@ metadata:
   # Manually Configured Metadata Section.
   name: SNOWFLAKE
   apiname: snowflake
-  spec_version: '1.3'
+  spec_version: '1.4'
 
 syntax:
   # Manually Configured Syntax Section.
@@ -42,22 +42,26 @@ data_types:
     #------------Numeric types--------------#
     - source:
         name: "NUMERIC"
-        max_scale: 38
+        max_precision: 38
+        max_scale: 37
       required_cast_args: "precision_scale"
       dremio:
         name: "double"
+
     - source:
         name: "NUMBER"
-        max_scale: 38
-      required_cast_args: "precision_scale"
+        max_precision: 38
+      required_cast_args: "precision"
       dremio:
-        name: "double"
+        name: "decimal"
+
     - source:
         name: "DECIMAL"
-        max_scale: 38
+        max_precision: 38
+        max_scale: 37
       required_cast_args: "precision_scale"
       dremio:
-        name: "double"
+        name: "decimal"
 
     - source:
         name: "INT"
@@ -337,7 +341,7 @@ expressions:
         - args:
             - "integer"
           return: "integer"
-    - names:
+    - names: #https://docs.snowflake.net/manuals/sql-reference/functions/position.html
         - "position"
         - "locate"
       signatures:
@@ -345,19 +349,13 @@ expressions:
             - "varchar"
             - "varchar"
           return: "integer"
-          rewrite: "STRPOS({1}, {0})"
+          rewrite: "POSITION({0}, {1})"
         - args:
             - "varchar"
             - "varchar"
             - "integer"
           return: "integer"
-          rewrite: "CASE WHEN {0} IS NULL OR {1} IS NULL OR {2} IS NULL THEN NULL WHEN STRPOS(SUBSTRING({1}, {2}), {0}) > 0 THEN CASE WHEN {2} >= 1 THEN STRPOS(SUBSTRING({1}, {2}), {0}) + {2} - 1 ELSE STRPOS({1}, {0}) END ELSE 0 END "
-        - args:
-            - "varchar"
-            - "varchar"
-            - "bigint"
-          return: "integer"
-          rewrite: "CASE WHEN {0} IS NULL OR {1} IS NULL OR {2} IS NULL THEN NULL WHEN STRPOS(SUBSTRING({1}, {2}), {0}) > 0 THEN CASE WHEN {2} >= 1 THEN STRPOS(SUBSTRING({1}, {2}), {0}) + {2} - 1 ELSE STRPOS({1}, {0}) END ELSE 0 END "
+          rewrite: "POSITION({0}, {1}, {2})"
     - names:
         - "pi"
       signatures:
@@ -370,12 +368,12 @@ expressions:
             - "double"
             - "integer"
           return: "double"
-          rewrite: "TRUNC(CAST({0} as decimal), {1})"
+          rewrite: "TRUNC({0}, {1})"
         - args:
             - "float"
             - "integer"
           return: "float"
-          rewrite: "TRUNC(CAST({0} as decimal), {1})"
+          rewrite: "TRUNC({0}, {1})"
         - args:
             - "bigint"
             - "integer"
@@ -389,11 +387,11 @@ expressions:
         - args:
             - "double"
           return: "double"
-          rewrite: "TRUNC(CAST({0} as decimal))"
+          rewrite: "TRUNC({0})"
         - args:
             - "float"
           return: "float"
-          rewrite: "TRUNC(CAST({0} as decimal))"
+          rewrite: "TRUNC({0})"
         - args:
             - "integer"
           return: "integer"
@@ -409,18 +407,8 @@ expressions:
             - "varchar"
           return: "varchar"
     - names:
-        - "rpad"
+        - "rpad" #https://docs.snowflake.net/manuals/sql-reference/functions/rpad.html
       signatures:
-        - args:
-            - "varchar"
-            - "integer"
-          return: "varchar"
-          rewrite: "RPAD({0}, {1}, '' '')"
-        - args:
-            - "varchar"
-            - "bigint"
-          return: "varchar"
-          rewrite: "RPAD({0}, {1}, '' '')"
         - args:
             - "varchar"
             - "integer"
@@ -432,18 +420,8 @@ expressions:
             - "varchar"
           return: "varchar"
     - names:
-        - "lpad"
+        - "lpad" #https://docs.snowflake.net/manuals/sql-reference/functions/lpad.html
       signatures:
-        - args:
-            - "varchar"
-            - "integer"
-          return: "varchar"
-          rewrite: "LPAD({0}, {1}, '' '')"
-        - args:
-            - "varchar"
-            - "bigint"
-          return: "varchar"
-          rewrite: "LPAD({0}, {1}, '' '')"
         - args:
             - "varchar"
             - "integer"
@@ -580,29 +558,6 @@ expressions:
           rewrite: "DAYOFYEAR({0})"
 
     - names:
-        - extract_epoch
-      signatures:
-        - return: bigint
-          args:
-            - date
-          rewrite: "CAST(EXTRACT(EPOCH FROM {0}) AS INT)"
-        - return: bigint
-          args:
-            - timestamp
-          rewrite: "CAST(EXTRACT(EPOCH FROM {0}) AS INT)"
-        - return: bigint
-          args:
-            - time
-          rewrite: "CAST(EXTRACT(EPOCH FROM {0}) AS INT)"
-        - return: bigint
-          args:
-            - interval_year_month
-          rewrite: "CAST(EXTRACT(EPOCH FROM {0}) AS INT)"
-        - return: bigint
-          args:
-            - interval_day_second
-          rewrite: "CAST(EXTRACT(EPOCH FROM {0}) AS INT)"
-    - names:
         - extract_quarter
       signatures:
         - return: bigint
@@ -617,6 +572,7 @@ expressions:
           args:
             - time
           rewrite: "QUARTER({0})"
+
     - names:
         - extract_week
       signatures:
@@ -632,6 +588,7 @@ expressions:
           args:
             - time
           rewrite: "WEEK({0})"
+
     - names:
         - "-"
       signatures:
@@ -1036,42 +993,45 @@ expressions:
         - args:
             - "interval_year_month"
           return: "interval_year_month"
-
+    # Math functions
     - names:
-        - "log10"
+        - "log" #https://docs.snowflake.net/manuals/sql-reference/functions/log.html
       signatures:
         - args:
             - "double"
+            - "double"
           return: "double"
-          rewrite: "LOG({0})"
+          rewrite: "LOG({0},{1})"
         - args:
             - "bigint"
+            - "bigint"
           return: "double"
-          rewrite: "LOG({0})"
+          rewrite: "LOG({0},{1})"
         - args:
             - "integer"
+            - "integer"
           return: "double"
-          rewrite: "LOG({0})"
+          rewrite: "LOG({0},{1})"
     - names:
-        - "acos"
+        - "acos" #https://docs.snowflake.net/manuals/sql-reference/functions/acos.html
       signatures:
         - args:
             - "double"
           return: "double"
     - names:
-        - "asin"
+        - "asin" #https://docs.snowflake.net/manuals/sql-reference/functions/asin.html
       signatures:
         - args:
             - "double"
           return: "double"
     - names:
-        - "exp"
+        - "exp" #https://docs.snowflake.net/manuals/sql-reference/functions/exp.html
       signatures:
         - args:
             - "double"
           return: "double"
     - names:
-        - "round"
+        - "round" #https://docs.snowflake.net/manuals/sql-reference/functions/round.html
       signatures:
         - args:
             - "integer"
@@ -1081,12 +1041,11 @@ expressions:
           return: "bigint"
         - args:
             - "double"
-          return: "double"
-          rewrite: "ROUND(CAST({0} as decimal))"
+          return: "bigint"
         - args:
             - "float"
           return: "float"
-          rewrite: "ROUND(CAST({0} as decimal))"
+          rewrite: "bigint"
         - args:
             - "bigint"
             - "integer"
@@ -1107,25 +1066,361 @@ expressions:
             - "double"
             - "integer"
           return: "double"
-          rewrite: "ROUND(CAST({0} as decimal), {1})"
         - args:
             - "double"
             - "bigint"
           return: "double"
-          rewrite: "ROUND(CAST({0} as decimal), {1})"
         - args:
             - "float"
             - "integer"
           return: "float"
-          rewrite: "ROUND(CAST({0} as decimal), {1})"
         - args:
             - "float"
             - "bigint"
           return: "float"
-          rewrite: "ROUND(CAST({0} as decimal), {1})"
-    # Modified Expressions
-
-    # Generated expressions
+    - names:
+      - "abs" #https://docs.snowflake.net/manuals/sql-reference/functions/abs.html
+      signatures:
+        - args:
+            - "integer"
+          return: "integer"
+        - args:
+            - "double"
+          return: "double"
+        - args:
+            - "bigint"
+          return: "bigint"
+        - args:
+            - "float"
+          return: "double"
+    - names:
+        - "atan" #https://docs.snowflake.net/manuals/sql-reference/functions/atan.html
+      signatures:
+        - args:
+            - "bigint"
+          return: "double"
+        - args:
+            - "double"
+          return: "double"
+        - args:
+            - "float"
+          return: "double"
+        - args:
+            - "integer"
+          return: "double"
+    - names:
+        - "atan2" #https://docs.snowflake.net/manuals/sql-reference/functions/atan2.html
+      signatures:
+        - args:
+            - "bigint"
+            - "float"
+          return: "double"
+        - args:
+            - "double"
+            - "double"
+          return: "double"
+        - args:
+            - "double"
+            - "bigint"
+          return: "double"
+        - args:
+            - "bigint"
+            - "integer"
+          return: "double"
+        - args:
+            - "integer"
+            - "bigint"
+          return: "double"
+        - args:
+            - "integer"
+            - "double"
+          return: "double"
+        - args:
+            - "float"
+            - "integer"
+          return: "double"
+        - args:
+            - "float"
+            - "float"
+          return: "double"
+        - args:
+            - "double"
+            - "float"
+          return: "double"
+        - args:
+            - "integer"
+            - "float"
+          return: "double"
+        - args:
+            - "bigint"
+            - "bigint"
+          return: "double"
+        - args:
+            - "float"
+            - "bigint"
+          return: "double"
+        - args:
+            - "float"
+            - "double"
+          return: "double"
+        - args:
+            - "bigint"
+            - "double"
+          return: "double"
+        - args:
+            - "integer"
+            - "integer"
+          return: "double"
+        - args:
+            - "double"
+            - "integer"
+          return: "double"
+    - names:
+        - "cbrt" #https://docs.snowflake.net/manuals/sql-reference/functions/cbrt.html
+      signatures:
+        - args:
+            - "bigint"
+          return: "double"
+        - args:
+            - "double"
+          return: "double"
+        - args:
+            - "float"
+          return: "double"
+        - args:
+            - "integer"
+          return: "double"
+    - names:
+        - "ceil" #https://docs.snowflake.net/manuals/sql-reference/functions/ceil.html
+      signatures:
+        - args:
+            - "bigint"
+          return: "double"
+        - args:
+            - "double"
+          return: "double"
+        - args:
+            - "float"
+          return: "double"
+        - args:
+            - "integer"
+          return: "double"
+    - names:
+        - "cos" #https://docs.snowflake.net/manuals/sql-reference/functions/cos.html
+      signatures:
+        - args:
+            - "bigint"
+          return: "double"
+        - args:
+            - "double"
+          return: "double"
+        - args:
+            - "float"
+          return: "double"
+        - args:
+            - "integer"
+          return: "double"
+    - names:
+        - "cot" #https://docs.snowflake.net/manuals/sql-reference/functions/cot.html
+      signatures:
+        - args:
+            - "bigint"
+          return: "double"
+        - args:
+            - "double"
+          return: "double"
+        - args:
+            - "float"
+          return: "double"
+        - args:
+            - "integer"
+          return: "double"
+    - names:
+        - "degrees" #https://docs.snowflake.net/manuals/sql-reference/functions/degrees.html
+      signatures:
+        - args:
+            - "bigint"
+          return: "double"
+        - args:
+            - "double"
+          return: "double"
+        - args:
+            - "float"
+          return: "double"
+        - args:
+            - "integer"
+          return: "double"
+    - names:
+        - "exp" #https://docs.snowflake.net/manuals/sql-reference/functions/exp.html
+      signatures:
+        - args:
+            - "float"
+          return: "double"
+        - args:
+            - "integer"
+          return: "double"
+    - names:
+        - "ln" #https://docs.snowflake.net/manuals/sql-reference/functions/ln.html
+      signatures:
+        - args:
+            - "bigint"
+          return: "double"
+        - args:
+            - "double"
+          return: "double"
+        - args:
+            - "float"
+          return: "double"
+        - args:
+            - "integer"
+          return: "double"
+    - names:
+        - "mod" #https://docs.snowflake.net/manuals/sql-reference/functions/mod.html
+      signatures:
+        - args:
+            - "double"
+            - "double"
+          return: "double"
+        - args:
+            - "double"
+            - "bigint"
+          return: "double"
+        - args:
+            - "integer"
+            - "double"
+          return: "double"
+        - args:
+            - "bigint"
+            - "bigint"
+          return: "bigint"
+        - args:
+            - "integer"
+            - "integer"
+          return: "integer"
+        - args:
+            - "bigint"
+            - "double"
+          return: "double"
+        - args:
+            - "bigint"
+            - "integer"
+          return: "integer"
+        - args:
+            - "double"
+            - "integer"
+          return: "double"
+        - args:
+            - "integer"
+            - "bigint"
+          return: "bigint"
+    - names:
+        - "power" #https://docs.snowflake.net/manuals/sql-reference/functions/pow.html
+      signatures:
+        - args:
+            - "bigint"
+            - "float"
+          return: "double"
+        - args:
+            - "bigint"
+            - "integer"
+          return: "double"
+        - args:
+            - "integer"
+            - "bigint"
+          return: "double"
+        - args:
+            - "integer"
+            - "double"
+          return: "double"
+        - args:
+            - "float"
+            - "integer"
+          return: "double"
+        - args:
+            - "float"
+            - "float"
+          return: "double"
+        - args:
+            - "double"
+            - "double"
+          return: "double"
+        - args:
+            - "integer"
+            - "integer"
+          return: "double"
+        - args:
+            - "double"
+            - "float"
+          return: "double"
+        - args:
+            - "double"
+            - "integer"
+          return: "double"
+        - args:
+            - "integer"
+            - "float"
+          return: "double"
+    - names:
+        - "radians" #https://docs.snowflake.net/manuals/sql-reference/functions/radians.html
+      signatures:
+        - args:
+            - "bigint"
+          return: "double"
+        - args:
+            - "double"
+          return: "double"
+        - args:
+            - "float"
+          return: "double"
+        - args:
+            - "integer"
+          return: "double"
+    - names:
+        - "sin" #https://docs.snowflake.net/manuals/sql-reference/functions/sin.html
+      signatures:
+        - args:
+            - "bigint"
+          return: "double"
+        - args:
+            - "double"
+          return: "double"
+        - args:
+            - "float"
+          return: "double"
+        - args:
+            - "integer"
+          return: "double"
+    - names:
+        - "sqrt" #https://docs.snowflake.net/manuals/sql-reference/functions/sqrt.html
+      signatures:
+        - args:
+            - "bigint"
+          return: "double"
+        - args:
+            - "double"
+          return: "double"
+        - args:
+            - "float"
+          return: "double"
+        - args:
+            - "integer"
+          return: "double"
+    - names:
+        - "tan" #https://docs.snowflake.net/manuals/sql-reference/functions/tan.html
+      signatures:
+        - args:
+            - "bigint"
+          return: "double"
+        - args:
+            - "double"
+          return: "double"
+        - args:
+            - "float"
+          return: "double"
+        - args:
+            - "integer"
+          return: "double"
+    #https://docs.snowflake.net/manuals/sql-reference/operators.html
 
     - names:
         - "-"
@@ -2313,375 +2608,7 @@ expressions:
             - "boolean"
             - "boolean"
           return: "boolean"
-    - names:
-        - "abs"
-      signatures:
-        - args:
-            - "integer"
-          return: "integer"
-        - args:
-            - "double"
-          return: "double"
-        - args:
-            - "bigint"
-          return: "bigint"
-        - args:
-            - "float"
-          return: "double"
-    - names:
-        - "acos"
-      signatures:
-        - args:
-            - "float"
-          return: "double"
-        - args:
-            - "integer"
-          return: "double"
-    - names:
-        - "asin"
-      signatures:
-        - args:
-            - "float"
-          return: "double"
-        - args:
-            - "integer"
-          return: "double"
-    - names:
-        - "atan"
-      signatures:
-        - args:
-            - "bigint"
-          return: "double"
-        - args:
-            - "double"
-          return: "double"
-        - args:
-            - "float"
-          return: "double"
-        - args:
-            - "integer"
-          return: "double"
-    - names:
-        - "atan2"
-      signatures:
-        - args:
-            - "bigint"
-            - "float"
-          return: "double"
-        - args:
-            - "double"
-            - "double"
-          return: "double"
-        - args:
-            - "double"
-            - "bigint"
-          return: "double"
-        - args:
-            - "bigint"
-            - "integer"
-          return: "double"
-        - args:
-            - "integer"
-            - "bigint"
-          return: "double"
-        - args:
-            - "integer"
-            - "double"
-          return: "double"
-        - args:
-            - "float"
-            - "integer"
-          return: "double"
-        - args:
-            - "float"
-            - "float"
-          return: "double"
-        - args:
-            - "double"
-            - "float"
-          return: "double"
-        - args:
-            - "integer"
-            - "float"
-          return: "double"
-        - args:
-            - "bigint"
-            - "bigint"
-          return: "double"
-        - args:
-            - "float"
-            - "bigint"
-          return: "double"
-        - args:
-            - "float"
-            - "double"
-          return: "double"
-        - args:
-            - "bigint"
-            - "double"
-          return: "double"
-        - args:
-            - "integer"
-            - "integer"
-          return: "double"
-        - args:
-            - "double"
-            - "integer"
-          return: "double"
-    - names:
-        - "cbrt"
-      signatures:
-        - args:
-            - "bigint"
-          return: "double"
-        - args:
-            - "double"
-          return: "double"
-        - args:
-            - "float"
-          return: "double"
-        - args:
-            - "integer"
-          return: "double"
-    - names:
-        - "ceil"
-      signatures:
-        - args:
-            - "bigint"
-          return: "double"
-        - args:
-            - "double"
-          return: "double"
-        - args:
-            - "float"
-          return: "double"
-        - args:
-            - "integer"
-          return: "double"
-    - names:
-        - "cos"
-      signatures:
-        - args:
-            - "bigint"
-          return: "double"
-        - args:
-            - "double"
-          return: "double"
-        - args:
-            - "float"
-          return: "double"
-        - args:
-            - "integer"
-          return: "double"
-    - names:
-        - "cot"
-      signatures:
-        - args:
-            - "bigint"
-          return: "double"
-        - args:
-            - "double"
-          return: "double"
-        - args:
-            - "float"
-          return: "double"
-        - args:
-            - "integer"
-          return: "double"
-    - names:
-        - "degrees"
-      signatures:
-        - args:
-            - "bigint"
-          return: "double"
-        - args:
-            - "double"
-          return: "double"
-        - args:
-            - "float"
-          return: "double"
-        - args:
-            - "integer"
-          return: "double"
-    - names:
-        - "exp"
-      signatures:
-        - args:
-            - "float"
-          return: "double"
-        - args:
-            - "integer"
-          return: "double"
-    - names:
-        - "ln"
-      signatures:
-        - args:
-            - "bigint"
-          return: "double"
-        - args:
-            - "double"
-          return: "double"
-        - args:
-            - "float"
-          return: "double"
-        - args:
-            - "integer"
-          return: "double"
-    - names:
-        - "mod"
-      signatures:
-        - args:
-            - "double"
-            - "double"
-          return: "double"
-          rewrite: "CASE WHEN {1} = 0 THEN NULL ELSE MOD({0}, {1}) END "
-        - args:
-            - "double"
-            - "bigint"
-          return: "double"
-          rewrite: "CASE WHEN {1} = 0 THEN NULL ELSE MOD({0}, {1}) END "
-        - args:
-            - "integer"
-            - "double"
-          return: "double"
-          rewrite: "CASE WHEN {1} = 0 THEN NULL ELSE MOD({0}, {1}) END "
-        - args:
-            - "bigint"
-            - "bigint"
-          return: "bigint"
-          rewrite: "CASE WHEN {1} = 0 THEN NULL ELSE MOD({0}, {1}) END "
-        - args:
-            - "integer"
-            - "integer"
-          return: "integer"
-          rewrite: "CASE WHEN {1} = 0 THEN NULL ELSE MOD({0}, {1}) END "
-        - args:
-            - "bigint"
-            - "double"
-          return: "double"
-          rewrite: "CASE WHEN {1} = 0 THEN NULL ELSE MOD({0}, {1}) END "
-        - args:
-            - "bigint"
-            - "integer"
-          return: "integer"
-          rewrite: "CASE WHEN {1} = 0 THEN NULL ELSE MOD({0}, {1}) END "
-        - args:
-            - "double"
-            - "integer"
-          return: "double"
-          rewrite: "CASE WHEN {1} = 0 THEN NULL ELSE MOD({0}, {1}) END "
-        - args:
-            - "integer"
-            - "bigint"
-          return: "bigint"
-          rewrite: "CASE WHEN {1} = 0 THEN NULL ELSE MOD({0}, {1}) END "
-    - names:
-        - "power"
-      signatures:
-        - args:
-            - "bigint"
-            - "float"
-          return: "double"
-        - args:
-            - "bigint"
-            - "integer"
-          return: "double"
-        - args:
-            - "integer"
-            - "bigint"
-          return: "double"
-        - args:
-            - "integer"
-            - "double"
-          return: "double"
-        - args:
-            - "float"
-            - "integer"
-          return: "double"
-        - args:
-            - "float"
-            - "float"
-          return: "double"
-        - args:
-            - "double"
-            - "double"
-          return: "double"
-        - args:
-            - "integer"
-            - "integer"
-          return: "double"
-        - args:
-            - "double"
-            - "float"
-          return: "double"
-        - args:
-            - "double"
-            - "integer"
-          return: "double"
-        - args:
-            - "integer"
-            - "float"
-          return: "double"
-    - names:
-        - "radians"
-      signatures:
-        - args:
-            - "bigint"
-          return: "double"
-        - args:
-            - "double"
-          return: "double"
-        - args:
-            - "float"
-          return: "double"
-        - args:
-            - "integer"
-          return: "double"
-    - names:
-        - "sin"
-      signatures:
-        - args:
-            - "bigint"
-          return: "double"
-        - args:
-            - "double"
-          return: "double"
-        - args:
-            - "float"
-          return: "double"
-        - args:
-            - "integer"
-          return: "double"
-    - names:
-        - "sqrt"
-      signatures:
-        - args:
-            - "bigint"
-          return: "double"
-        - args:
-            - "double"
-          return: "double"
-        - args:
-            - "float"
-          return: "double"
-        - args:
-            - "integer"
-          return: "double"
-    - names:
-        - "tan"
-      signatures:
-        - args:
-            - "bigint"
-          return: "double"
-        - args:
-            - "double"
-          return: "double"
-        - args:
-            - "float"
-          return: "double"
-        - args:
-            - "integer"
-          return: "double"
+
     - names:
         - "char_length"
       signatures:
