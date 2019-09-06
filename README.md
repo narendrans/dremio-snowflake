@@ -23,6 +23,7 @@
    * [Contribution](#contribution)
       * [Submitting an issue](#submitting-an-issue)
       * [Pull Requests](#pull-requests)
+   * [Troubleshooting](#troubleshooting)
 <!--te-->
 
 Overview
@@ -119,3 +120,27 @@ PRs are welcome. When submitting a PR make sure of the following:
 * Use a YAML linter to check the syntactic correctness of YAML file
 * Make sure the build passes
 * Run basic queries at least to ensure things are working properly
+
+Troubleshooting
+------------
+
+### Snowflake unable to create the cache directory
+
+If you see the following trace in dremio:
+
+```
+Caused by: java.lang.RuntimeException: Failed to locate or create the cache directory: /home/dremio/.cache/snowflake
+        at net.snowflake.client.core.FileCacheManager.build(FileCacheManager.java:159) ~[snowflake-jdbc-3.8.7.jar:3.8.7]
+        at net.snowflake.client.core.SFTrustManager.<clinit>(SFTrustManager.java:197) ~[snowflake-jdbc-3.8.7.jar:3.8.7]
+        ... 21 common frames omitted
+ ```
+You should then set the File cache environment variables documented [here](https://docs.snowflake.net/manuals/user-guide/jdbc-configure.html#file-caches)
+
+```
+export SF_TEMPORARY_CREDENTIAL_CACHE_DIR=<path>
+export SF_OCSP_RESPONSE_CACHE_DIR=<path>
+```
+
+To set them as JAVA properties, add them to the [conf/dremio-env file](https://docs.dremio.com/advanced-administration/dremio-env.html)
+
+`DREMIO_JAVA_SERVER_EXTRA_OPTS='-Dnet.snowflake.jdbc.temporaryCredentialCacheDir=/tmp -Dnet.snowflake.jdbc.ocspResponseCacheDir=/tmp'`
