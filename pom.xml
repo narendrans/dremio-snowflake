@@ -43,19 +43,20 @@
 
          Install Dremio JDBC driver locally:
          mvn install:install-file \
-             -Dfile=/opt/dremio/jars/jdbc-driver/dremio-jdbc-driver-3.3.1-201907291852280797-df23756.jar \
+             -Dfile=/Users/naren/Desktop/dremio/jars/jdbc-driver/dremio-jdbc-driver-4.0.0-201909121834570395-c7a5071.jar \
              -DgroupId=com.dremio \
              -DartifactId=jdbc-driver \
-             -Dversion=3.3.1 \
+             -Dversion=4.0.0 \
              -Dpackaging=jar \
              -DgeneratePom=true
      -->
-    <!--<dependency>
+    <dependency>
       <groupId>com.dremio</groupId>
       <artifactId>jdbc-driver</artifactId>
-      <version>3.3.1</version>
-      <scope>test</scope>
-    </dependency>-->
+      <version>4.0.0</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/src/main/resources/dremio-jdbc-driver-4.0.0-201909121834570395-c7a5071.jar</systemPath>
+    </dependency>
 
     <!-- https://mvnrepository.com/artifact/net.snowflake/snowflake-jdbc -->
     <dependency>

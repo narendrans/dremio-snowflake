@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
+import java.util.TimeZone;
 import org.apache.commons.io.FileUtils;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpDelete;
@@ -125,6 +126,8 @@ public class SnowflakeTest {
   public void queryTest() throws IOException, SQLException {
     log.info("Dremio: SELECT * FROM all_types");
 
+    TimeZone.setDefault(TimeZone.getTimeZone("Etc/UTC"));
+
     // Get resultset from Dremio
     Connection dremioConnection = DriverManager
         .getConnection("jdbc:dremio:direct=localhost;user=dremio;password=dremio123");
@@ -148,14 +151,15 @@ public class SnowflakeTest {
         .executeQuery("SELECT * FROM \"DEMO_DB\".\"PUBLIC\".\"all_types\"");
     snowflakeRs.next();
 
+
     // Compare
+
+    assertEquals(dremioRs.getBigDecimal("A"), snowflakeRs.getBigDecimal("A"));
+    assertEquals(dremioRs.getInt("B"), snowflakeRs.getInt("B"));
     assertEquals(dremioRs.getInt("C"), snowflakeRs.getInt("C"));
     assertEquals(dremioRs.getInt("D"), snowflakeRs.getInt("D"));
-
-    assertEquals(dremioRs.getString("M"), snowflakeRs.getString("M"));
-    assertEquals(dremioRs.getString("N"), snowflakeRs.getString("N"));
-    assertEquals(dremioRs.getString("O"), snowflakeRs.getString("O"));
-    assertEquals(dremioRs.getString("P"), snowflakeRs.getString("P"));
+    assertEquals(dremioRs.getInt("E"), snowflakeRs.getInt("E"));
+    assertEquals(dremioRs.getInt("F"), snowflakeRs.getInt("F"));
 
     assertEquals(dremioRs.getDouble("G"), snowflakeRs.getDouble("G"),0.1);
     assertEquals(dremioRs.getDouble("H"), snowflakeRs.getDouble("H"),0.1);
@@ -164,8 +168,21 @@ public class SnowflakeTest {
     assertEquals(dremioRs.getDouble("K"), snowflakeRs.getDouble("K"),0.1);
     assertEquals(dremioRs.getDouble("L"), snowflakeRs.getDouble("L"),0.1);
 
+    assertEquals(dremioRs.getString("M"), snowflakeRs.getString("M"));
+    assertEquals(dremioRs.getString("N"), snowflakeRs.getString("N"));
+    assertEquals(dremioRs.getString("O"), snowflakeRs.getString("O"));
+    assertEquals(dremioRs.getString("P"), snowflakeRs.getString("P"));
+
+    assertEquals(new String(dremioRs.getBytes("Q")), new String(snowflakeRs.getBytes("Q")));
+    assertEquals(new String(dremioRs.getBytes("R")), new String(snowflakeRs.getBytes("R")));
+
     assertEquals(dremioRs.getTimestamp("S"), snowflakeRs.getTimestamp("S"));
+    assertEquals(dremioRs.getTime("T"), snowflakeRs.getTime("T"));
     assertEquals(dremioRs.getTimestamp("U"), snowflakeRs.getTimestamp("U"));
+
+
+    dremioStatement.close();
+    snowflakeStatement.close();
 
   }
 
