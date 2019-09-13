@@ -45,14 +45,14 @@ data_types:
         max_scale: 37
       required_cast_args: "precision_scale"
       dremio:
-        name: "double"
+        name: "DECIMAL"
 
     - source:
         name: "NUMBER"
         max_precision: 38
         max_scale: 37
       dremio:
-        name: "double"
+        name: "DECIMAL"
 
     - source:
         name: "DECIMAL"
@@ -60,7 +60,7 @@ data_types:
         max_scale: 37
       required_cast_args: "precision_scale"
       dremio:
-        name: "double"
+        name: "DECIMAL"
 
     - source:
         name: "INT"

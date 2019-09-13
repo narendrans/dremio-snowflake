@@ -149,11 +149,13 @@ public class SnowflakeTest {
     snowflakeRs.next();
 
     // Compare
+    assertEquals(dremioRs.getInt("C"), snowflakeRs.getInt("C"));
+    assertEquals(dremioRs.getInt("D"), snowflakeRs.getInt("D"));
+
     assertEquals(dremioRs.getString("M"), snowflakeRs.getString("M"));
     assertEquals(dremioRs.getString("N"), snowflakeRs.getString("N"));
     assertEquals(dremioRs.getString("O"), snowflakeRs.getString("O"));
     assertEquals(dremioRs.getString("P"), snowflakeRs.getString("P"));
-
 
     assertEquals(dremioRs.getDouble("G"), snowflakeRs.getDouble("G"),0.1);
     assertEquals(dremioRs.getDouble("H"), snowflakeRs.getDouble("H"),0.1);
@@ -164,7 +166,6 @@ public class SnowflakeTest {
 
     assertEquals(dremioRs.getTimestamp("S"), snowflakeRs.getTimestamp("S"));
     assertEquals(dremioRs.getTimestamp("U"), snowflakeRs.getTimestamp("U"));
-
 
   }
 
