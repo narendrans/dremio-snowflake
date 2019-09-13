@@ -21,7 +21,7 @@ t TIME,
 u TIMESTAMP);
 
 INSERT INTO "DEMO_DB"."PUBLIC"."all_types" VALUES (
-123,
+1,
 334,
 55,
 555,

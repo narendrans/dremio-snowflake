@@ -19,7 +19,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.dremio.exec.catalog.conf.Secret;
 import org.apache.log4j.Logger;
-import org.hibernate.validator.constraints.NotBlank;
 
 import com.dremio.exec.catalog.conf.DisplayMetadata;
 import com.dremio.exec.catalog.conf.NotMetadataImpacting;
@@ -49,7 +48,6 @@ public class SnowflakeConf extends AbstractArpConf<SnowflakeConf> {
   /*
      Check Snowflake JDBC connection docs for more details: https://docs.snowflake.net/manuals/user-guide/jdbc-configure.html
    */
-  @NotBlank
   @Tag(1)
   @DisplayMetadata(label = "JDBC URL (Ex: jdbc:snowflake://<account_name>.snowflakecomputing.com/?param1=value&param2=value)")
   public String jdbcURL;

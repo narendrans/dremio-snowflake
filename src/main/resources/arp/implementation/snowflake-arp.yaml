@@ -18,7 +18,7 @@ metadata:
   # Manually Configured Metadata Section.
   name: SNOWFLAKE
   apiname: snowflake
-  spec_version: '1.4'
+  spec_version: '2'
 
 syntax:
   # Manually Configured Syntax Section.
@@ -38,7 +38,6 @@ data_types:
       dremio:
         name: "boolean"
 
-
     #------------Numeric types--------------#
     - source:
         name: "NUMERIC"
@@ -51,9 +50,9 @@ data_types:
     - source:
         name: "NUMBER"
         max_precision: 38
-      required_cast_args: "precision"
+        max_scale: 37
       dremio:
-        name: "decimal"
+        name: "double"
 
     - source:
         name: "DECIMAL"
@@ -61,7 +60,7 @@ data_types:
         max_scale: 37
       required_cast_args: "precision_scale"
       dremio:
-        name: "decimal"
+        name: "double"
 
     - source:
         name: "INT"
@@ -316,13 +315,13 @@ expressions:
       signatures:
         - args:
             - "bigint"
-          return: "bigint"
+          return: "integer"
         - args:
             - "double"
-          return: "double"
+          return: "integer"
         - args:
             - "float"
-          return: "float"
+          return: "integer"
         - args:
             - "integer"
           return: "integer"
@@ -1013,6 +1012,18 @@ expressions:
           return: "double"
           rewrite: "LOG({0},{1})"
     - names:
+        - "log" #https://docs.snowflake.net/manuals/sql-reference/functions/log.html
+      signatures:
+        - args:
+            - "double"
+          return: "double"
+        - args:
+            - "bigint"
+          return: "double"
+        - args:
+            - "integer"
+          return: "double"
+    - names:
         - "acos" #https://docs.snowflake.net/manuals/sql-reference/functions/acos.html
       signatures:
         - args:
@@ -1207,6 +1218,7 @@ expressions:
           return: "double"
     - names:
         - "cos" #https://docs.snowflake.net/manuals/sql-reference/functions/cos.html
+        - "cosh"
       signatures:
         - args:
             - "bigint"
@@ -1407,6 +1419,7 @@ expressions:
           return: "double"
     - names:
         - "tan" #https://docs.snowflake.net/manuals/sql-reference/functions/tan.html
+        - "tanh"
       signatures:
         - args:
             - "bigint"

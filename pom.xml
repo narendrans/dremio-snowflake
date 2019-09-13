@@ -21,12 +21,12 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.dremio.plugins</groupId>
-  <version>3.3.1-201907291852280797-df23756</version>
+  <version>4.0.0</version>
   <artifactId>dremio-snowflake-plugin</artifactId>
   <name>Dremio Snowflake Community Connector</name>
 
   <properties>
-    <version.dremio>3.3.1-201907291852280797-df23756</version.dremio>
+    <version.dremio>4.0.0-201909121834570395-c7a5071</version.dremio>
   </properties>
 
   <dependencies>
