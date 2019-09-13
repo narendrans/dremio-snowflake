@@ -2,4 +2,4 @@ language: java
 sudo: false
 before_install:
   - wget https://maven.dremio.com/free/com/dremio/distribution/dremio-jdbc-driver/4.0.0-201909121834570395-c7a5071/dremio-jdbc-driver-4.0.0-201909121834570395-c7a5071.jar -P src/main/resources
-script: "mvn clean install"
+script: "mvn clean install -DskipTests"

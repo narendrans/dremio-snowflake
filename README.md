@@ -13,6 +13,7 @@
 
 <!--ts-->
    * [Overview](#overview)
+   * [Features](#features)
    * [Demo](#demo)
    * [Downloading a Release](#downloading-a-release)
    * [Usage](#usage)
@@ -31,7 +32,15 @@ Overview
 
 This is a community based Snowflake Dremio connector made using the ARP framework. Check [Dremio Hub](https://github.com/dremio-hub) for more examples and [ARP Docs](https://github.com/dremio-hub/dremio-sqllite-connector#arp-file-format) for documentation. 
 
-_This is not an official Dremio connector. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND._ 
+_This is not an official Dremio connector. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND._
+
+Features
+-----------
+
+* Complete datatype support
+* Pushdown of over 50+ functions
+* Verified push downs of all TPCH queries
+
 
 Demo
 -----------
