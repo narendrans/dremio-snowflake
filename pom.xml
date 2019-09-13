@@ -42,6 +42,7 @@
          Temporary fix. Dremio JDBC driver will be pushed to Maven from the upcoming release.
 
          Install Dremio JDBC driver locally:
+
          mvn install:install-file \
              -Dfile=/Users/naren/Desktop/dremio/jars/jdbc-driver/dremio-jdbc-driver-4.0.0-201909121834570395-c7a5071.jar \
              -DgroupId=com.dremio \
@@ -49,6 +50,10 @@
              -Dversion=4.0.0 \
              -Dpackaging=jar \
              -DgeneratePom=true
+
+         For unit tests (TravisCI, Docker build)
+
+         wget https://maven.dremio.com/free/com/dremio/distribution/dremio-jdbc-driver/4.0.0-201909121834570395-c7a5071/dremio-jdbc-driver-4.0.0-201909121834570395-c7a5071.jar -P src/main/resources
      -->
     <dependency>
       <groupId>com.dremio</groupId>
