@@ -5,7 +5,7 @@ select
     l_suppkey,
     sum(l_extendedprice * (1 - l_discount))
 from
-    cp."tpch/lineitem.parquet"
+    lineitem
 where
         l_shipdate >= date '1993-05-01'
   and l_shipdate < date '1993-05-01' + interval '3' month
