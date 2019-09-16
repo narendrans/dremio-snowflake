@@ -521,7 +521,34 @@ expressions:
             - "bigint"
             - "varchar"
           return: "varchar"
-
+    - names: #https://docs.snowflake.net/manuals/sql-reference/functions/substr.html
+        - "substring"
+      signatures:
+        - args:
+            - "varchar"
+            - "integer"
+            - "integer"
+          return: "varchar"
+          rewrite: "substring({0},{1},{2})"
+        - args:
+            - "varchar"
+            - "integer"
+          return: "varchar"
+          rewrite: "substring({0},{1})"
+    - names:
+        - "substr"
+      signatures:
+        - args:
+            - "varchar"
+            - "integer"
+            - "integer"
+          return: "varchar"
+          rewrite: "substring({0},{1},{2})"
+        - args:
+            - "varchar"
+            - "integer"
+          return: "varchar"
+          rewrite: "substring({0},{1})"
     # Snowlake supports both EXTRACT (type from field) and YEAR/MONTH/DAY/SECOND etc..
     # https://docs.snowflake.net/manuals/sql-reference/functions/date_part.html
     - names:

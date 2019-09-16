@@ -1,11 +1,3 @@
--- The following query doesn't execute in Snowflake. Placed here for reference:
--- *****************************************************************************
--- SQL compilation error: syntax error line 8 at position 21 unexpected 'from'.
--- syntax error line 8 at position 26 unexpected '1'. syntax error line 10 at position 2 unexpected
--- 'from'. syntax error line 13 at position 21 unexpected 'from'. syntax error line 16 at position 4
--- unexpected 'select'. syntax error line 17 at position 9 unexpected 'c_acctbal'. syntax error line 22
--- at position 27 unexpected 'from'. syntax error line 24 at position 3 unexpected ')'.
--- *****************************************************************************
 select
     cntrycode,
     count(*) as numcust,
@@ -26,7 +18,7 @@ from
             from
                 customer
             where
-                    c_acctbal > 0.00::fixeddecimal
+                    c_acctbal > 0.00
               and substring(c_phone from 1 for 2) in
                   ('30', '24', '31', '38', '25', '34', '37')
         )

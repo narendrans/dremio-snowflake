@@ -1,4 +1,5 @@
 -- Taken from https://github.com/dremio/dremio-oss/blob/master/sabot/kernel/src/test/resources/queries/tpch/
+-- Create a data set in Dremio and use it as such... (create view is not supported)
 
 create view revenue0 (supplier_no, total_revenue) as
 select
