@@ -8,13 +8,16 @@
 ![Last Commit](https://img.shields.io/github/last-commit/narendrans/dremio-snowflake)
 [![Docker build](https://img.shields.io/docker/cloud/build/narendrans/dremio-snowflake.svg)](https://hub.docker.com/r/narendrans/dremio-snowflake/builds)
 
+![Latest Release](https://img.shields.io/github/v/release/narendrans/dremio-snowflake)
 ![License](https://img.shields.io/badge/license-Apache%202-blue)
 ![Platform](https://img.shields.io/badge/platform-linux%20%7C%20macos%20%7C%20windows-blue)
+[![Chat](https://img.shields.io/gitter/room/Dremio-Snowflake-Connector/community)](https://gitter.im/Dremio-Snowflake-Connector/community)
 
 <!--ts-->
    * [Overview](#overview)
-   * [Features](#features)
-   * [Demo](#demo)
+      * [Use Cases](#use-cases)
+      * [Features](#features)
+      * [Demo](#demo)
    * [Downloading a Release](#downloading-a-release)
    * [Usage](#usage)
    * [Development](#development)
@@ -32,7 +35,19 @@ Overview
 
 This is a community based Snowflake Dremio connector made using the ARP framework. Check [Dremio Hub](https://github.com/dremio-hub) for more examples and [ARP Docs](https://github.com/dremio-hub/dremio-sqllite-connector#arp-file-format) for documentation. 
 
-_This is not an official Dremio connector. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND._
+What is Dremio?
+-----------
+
+Dremio delivers lightning fast query speed and a self-service semantic layer operating directly against your data lake storage and other sources. No moving data to proprietary data warehouses or creating cubes, aggregation tables and BI extracts. Just flexibility and control for Data Architects, and self-service for Data Consumers.
+
+Use Cases
+-----------
+
+* [Join data](https://www.dremio.com/tutorials/combining-data-from-multiple-datasets/) from Snowflake with other sources (On prem/Cloud)
+* Interactive SQL performance with [Data Reflections](https://www.dremio.com/tutorials/getting-started-with-data-reflections/)
+* Offload Snowflake tables using [CTAS](https://www.dremio.com/tutorials/high-performance-parallel-exports/) to your cheap data lake storage - HDFS, S3, ADLS
+  * Or use [COPY INTO](https://docs.snowflake.net/manuals/sql-reference/sql/copy-into-location.html) to export data from Snowflake into S3/ADLS and query them directly using Dremio or [create external reflections](https://docs.dremio.com/acceleration/creating-reflections.html#external-reflections) on top of them.
+* [Curate Datasets](https://www.dremio.com/tutorials/data-curation-with-dremio/) easily through the self-service platform
 
 Features
 -----------
@@ -63,7 +78,7 @@ Usage
 ### Required Parameters
 
 * JDBC URL
-    * Ex: jdbc:snowflake://<account_name>.snowflakecomputing.com/?param1=value&param2=value. [More details](https://docs.snowflake.net/manuals/user-guide/jdbc-configure.html).
+    * Ex: `jdbc:snowflake://<account_name>.snowflakecomputing.com/?param1=value&param2=value`. [More details](https://docs.snowflake.net/manuals/user-guide/jdbc-configure.html).
 * Username, Password
     * The username and password with which you want to connect to Snowflake 
 
@@ -72,20 +87,34 @@ Usage
 Building and Installation
 -----------
 
-1. In root directory with the pom.xml file run `mvn clean install`
+1. In root directory with the pom.xml file run `mvn clean install -DskipTests`. If you want to run the tests, add the JDBC jar to your local maven repo along with environment variables that are required. Check the basic test example for more details.
 2. Take the resulting .jar file in the target folder and put it in the <DREMIO_HOME>\jars folder in Dremio
 3. Download the Snowflake JDBC driver from (https://mvnrepository.com/artifact/net.snowflake/snowflake-jdbc/3.8.6 and click on the JAR link) and put in in the <DREMIO_HOME>\jars\3rdparty folder
 4. Restart Dremio
 
 Building a Docker image
 -------
+Note: You can pull the pre-built docker images: https://hub.docker.com/r/narendrans/dremio-snowflake
 
 Dockerfile:
 
 ```
-FROM dremio/dremio-oss
+FROM dremio/dremio-oss:4.0.0
 USER root
-RUN cd /opt/dremio/jars && wget https://repo1.maven.org/maven2/net/snowflake/snowflake-jdbc/3.8.8/snowflake-jdbc-3.8.8.jar && wget https://github.com/narendrans/dremio-snowflake/releases/download/1.2/dremio-snowflake-plugin-3.3.1-201907291852280797-df23756.jar && chown dremio snowflake-jdbc-3.8.8.jar dremio-snowflake-plugin-3.3.1-201907291852280797-df23756.jar
+
+WORKDIR /tmp
+
+RUN wget http://apache.osuosl.org/maven/maven-3/3.6.1/binaries/apache-maven-3.6.1-bin.zip && \
+	unzip apache-maven-3.6.1-bin.zip && \
+	git clone https://github.com/narendrans/dremio-snowflake.git && cd dremio-snowflake && \
+	export PATH=$PATH:/tmp/apache-maven-3.6.1/bin && \
+	mvn clean install -DskipTests && \
+	cp target/dremio-snowflake*.jar /opt/dremio/jars && \
+	cd /opt/dremio/jars && wget https://repo1.maven.org/maven2/net/snowflake/snowflake-jdbc/3.9.1/snowflake-jdbc-3.9.1.jar && \
+	chown dremio *snowflake*.jar && rm -rf ~/.m2 && rm -rf /tmp/*
+
+WORKDIR /opt/dremio
+USER dremio
 ```
 
 Build:
