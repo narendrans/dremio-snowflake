@@ -18,8 +18,12 @@ package com.dremio.exec.store.jdbc.conf;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import java.util.Properties;
+
 import javax.sql.DataSource;
-import org.apache.log4j.Logger;
+
+import org.hibernate.validator.constraints.NotBlank;
+
 import com.dremio.exec.catalog.conf.DisplayMetadata;
 import com.dremio.exec.catalog.conf.NotMetadataImpacting;
 import com.dremio.exec.catalog.conf.Secret;
@@ -33,6 +37,7 @@ import com.dremio.exec.store.jdbc.JdbcStoragePlugin.Config;
 import com.dremio.exec.store.jdbc.dialect.arp.ArpDialect;
 import com.dremio.exec.store.jdbc.dialect.arp.ArpYaml;
 import com.google.common.annotations.VisibleForTesting;
+
 import io.protostuff.Tag;
 
 /**
@@ -45,7 +50,7 @@ public class SnowflakeConf extends AbstractArpConf<SnowflakeConf> {
   private static final ArpDialect ARP_DIALECT =
       AbstractArpConf.loadArpFile(ARP_FILENAME, (SnowflakeDialect::new));
   private static final String DRIVER = "net.snowflake.client.jdbc.SnowflakeDriver";
-  private static Logger logger = Logger.getLogger(SnowflakeConf.class);
+  private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(SnowflakeConf.class);
 
   /*
     The following block is required as Snowflake reports integers as NUMBER(38,0).
@@ -76,9 +81,10 @@ public class SnowflakeConf extends AbstractArpConf<SnowflakeConf> {
   /*
      Check Snowflake JDBC connection docs for more details: https://docs.snowflake.net/manuals/user-guide/jdbc-configure.html
    */
+  @NotBlank
   @Tag(1)
-  @DisplayMetadata(label = "JDBC URL (Ex: jdbc:snowflake://<account_name>.snowflakecomputing.com/?param1=value&param2=value)")
-  public String jdbcURL;
+  @DisplayMetadata(label = "Account Name (Ex: ab12345.us-east-1)")
+  public String accountName;
 
   @Tag(2)
   @DisplayMetadata(label = "Username")
@@ -94,10 +100,18 @@ public class SnowflakeConf extends AbstractArpConf<SnowflakeConf> {
   @NotMetadataImpacting
   public int fetchSize = 2000;
 
+  @Tag(5)
+  @DisplayMetadata(label = "Role")
+  public String roleName;
+
+  @Tag(6)
+  @DisplayMetadata(label = "Warehouse")
+  public String warehouseName;
+
   @VisibleForTesting
   public String toJdbcConnectionString() {
-    checkNotNull(this.jdbcURL, "JDBC URL is required");
-    return jdbcURL;
+    final String acctName = checkNotNull(this.accountName, "Missing account name.");
+    return String.format("jdbc:snowflake://%s.snowflakecomputing.com/", acctName);
   }
 
   @Override
@@ -114,8 +128,15 @@ public class SnowflakeConf extends AbstractArpConf<SnowflakeConf> {
   }
 
   private CloseableDataSource newDataSource() {
+    Properties properties = new Properties();
+
+    // Ensure session keep alive is enabled since Dremio likes to keep connections open for the life of the process
+    properties.setProperty("CLIENT_SESSION_KEEP_ALIVE", "true");
+    properties.setProperty("role", this.roleName);
+    properties.setProperty("warehouse", this.warehouseName);
+
     return DataSources.newGenericConnectionPoolDataSource(DRIVER,
-        toJdbcConnectionString(), username, password, null,
+        toJdbcConnectionString(), username, password, properties,
         DataSources.CommitMode.DRIVER_SPECIFIED_COMMIT_MODE);
   }
 
