@@ -21,12 +21,12 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.dremio.plugins</groupId>
-  <version>4.1.4</version>
+  <version>4.1.7</version>
   <artifactId>dremio-snowflake-plugin</artifactId>
   <name>Dremio Snowflake Community Connector</name>
 
   <properties>
-    <version.dremio>4.1.4-202001240912140359-a90eb503</version.dremio>
+    <version.dremio>4.1.7-202002220604270180-54f278ec</version.dremio>
   </properties>
 
   <dependencies>
@@ -82,7 +82,7 @@
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
-      <version>2.9.9.3</version>
+      <version>2.10.2</version>
     </dependency>
   </dependencies>
 
