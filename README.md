@@ -80,7 +80,8 @@ Usage
 * JDBC URL
     * Ex: `jdbc:snowflake://<account_name>.snowflakecomputing.com/?param1=value&param2=value`. [More details](https://docs.snowflake.net/manuals/user-guide/jdbc-configure.html).
 * Username, Password
-    * The username and password with which you want to connect to Snowflake 
+    * The username and password with which you want to connect to Snowflake. Password is not needed if you want to use a PEM file. In that case you can use a JDBC string like below (The pem must exist on all the nodes)
+    `jdbc:snowflake://account.us-east-1.snowflakecomputing.com?warehouse=compute_wh&private_key_file=/Users/naren/Desktop/rsa_key.pem`
 
 ## Development
 
