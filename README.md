@@ -100,7 +100,7 @@ Note: You can pull the pre-built docker images: https://hub.docker.com/r/narendr
 Dockerfile:
 
 ```
-FROM dremio/dremio-oss:4.0.0
+FROM dremio/dremio-oss:4.2.2
 USER root
 
 WORKDIR /tmp
