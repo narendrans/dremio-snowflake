@@ -521,6 +521,273 @@ expressions:
             - "bigint"
             - "varchar"
           return: "varchar"
+    - names:
+        - "length" #https://docs.snowflake.net/manuals/sql-reference/functions/length.html
+      signatures:
+        - args:
+            - "varchar"
+          return: "integer"
+    - names:
+        - "lower" #https://docs.snowflake.net/manuals/sql-reference/functions/lower.html
+      signatures:
+        - args:
+            - "varchar"
+          return: "varchar"
+    - names:
+        - "regexp_like" #https://docs.snowflake.net/manuals/sql-reference/functions/regexp_like.html
+      signatures:
+        - args:
+            - "varchar"
+            - "varchar"
+          return: "boolean"
+    - names:
+        - "replace" #https://docs.snowflake.net/manuals/sql-reference/functions/replace.html
+      signatures:
+        - args:
+            - "varchar"
+            - "varchar"
+            - "varchar"
+          return: "varchar"
+    - names:
+        - "upper" #https://docs.snowflake.net/manuals/sql-reference/functions/upper.html
+      signatures:
+        - args:
+            - "varchar"
+          return: "varchar"
+    - names:
+        - "timestampdiff_day" #https://docs.snowflake.net/manuals/sql-reference/functions/timestampdiff.html
+      signatures:
+        - args:
+            - "timestamp"
+            - "timestamp"
+          return: "integer"
+        - args:
+            - "time"
+            - "time"
+          return: "integer"
+        - args:
+            - "date"
+            - "date"
+          return: "integer"
+        - args:
+            - "timestamp"
+            - "date"
+          return: "integer"
+        - args:
+            - "timestamp"
+            - "time"
+          return: "integer"
+        - args:
+            - "time"
+            - "timestamp"
+          return: "integer"
+        - args:
+            - "time"
+            - "date"
+          return: "integer"
+        - args:
+            - "date"
+            - "time"
+          return: "integer"
+        - args:
+            - "date"
+            - "timestamp"
+          return: "integer"
+    - names:
+        - "timestampdiff_hour" #https://docs.snowflake.net/manuals/sql-reference/functions/timestampdiff.html
+      signatures:
+        - args:
+            - "timestamp"
+            - "timestamp"
+          return: "integer"
+        - args:
+            - "time"
+            - "time"
+          return: "integer"
+        - args:
+            - "date"
+            - "date"
+          return: "integer"
+        - args:
+            - "timestamp"
+            - "date"
+          return: "integer"
+        - args:
+            - "timestamp"
+            - "time"
+          return: "integer"
+        - args:
+            - "time"
+            - "timestamp"
+          return: "integer"
+        - args:
+            - "time"
+            - "date"
+          return: "integer"
+        - args:
+            - "date"
+            - "time"
+          return: "integer"
+        - args:
+            - "date"
+            - "timestamp"
+          return: "integer"
+    - names:
+        - "timestampdiff_minute" #https://docs.snowflake.net/manuals/sql-reference/functions/timestampdiff.html
+      signatures:
+        - args:
+            - "timestamp"
+            - "timestamp"
+          return: "integer"
+        - args:
+            - "time"
+            - "time"
+          return: "integer"
+        - args:
+            - "date"
+            - "date"
+          return: "integer"
+        - args:
+            - "timestamp"
+            - "date"
+          return: "integer"
+        - args:
+            - "timestamp"
+            - "time"
+          return: "integer"
+        - args:
+            - "time"
+            - "timestamp"
+          return: "integer"
+        - args:
+            - "time"
+            - "date"
+          return: "integer"
+        - args:
+            - "date"
+            - "time"
+          return: "integer"
+        - args:
+            - "date"
+            - "timestamp"
+          return: "integer"
+    - names:
+        - "timestampdiff_month" #https://docs.snowflake.net/manuals/sql-reference/functions/timestampdiff.html
+      signatures:
+        - args:
+            - "timestamp"
+            - "timestamp"
+          return: "integer"
+        - args:
+            - "time"
+            - "time"
+          return: "integer"
+        - args:
+            - "date"
+            - "date"
+          return: "integer"
+        - args:
+            - "timestamp"
+            - "date"
+          return: "integer"
+        - args:
+            - "timestamp"
+            - "time"
+          return: "integer"
+        - args:
+            - "time"
+            - "timestamp"
+          return: "integer"
+        - args:
+            - "time"
+            - "date"
+          return: "integer"
+        - args:
+            - "date"
+            - "time"
+          return: "integer"
+        - args:
+            - "date"
+            - "timestamp"
+          return: "integer"
+    - names:
+      - "timestampdiff_second" #https://docs.snowflake.net/manuals/sql-reference/functions/timestampdiff.html
+      signatures:
+        - args:
+            - "timestamp"
+            - "timestamp"
+          return: "integer"
+        - args:
+            - "time"
+            - "time"
+          return: "integer"
+        - args:
+            - "date"
+            - "date"
+          return: "integer"
+        - args:
+            - "timestamp"
+            - "date"
+          return: "integer"
+        - args:
+            - "timestamp"
+            - "time"
+          return: "integer"
+        - args:
+            - "time"
+            - "timestamp"
+          return: "integer"
+        - args:
+            - "time"
+            - "date"
+          return: "integer"
+        - args:
+            - "date"
+            - "time"
+          return: "integer"
+        - args:
+            - "date"
+            - "timestamp"
+          return: "integer"
+    - names:
+      - "timestampdiff_year" #https://docs.snowflake.net/manuals/sql-reference/functions/timestampdiff.html
+      signatures:
+        - args:
+            - "timestamp"
+            - "timestamp"
+          return: "integer"
+        - args:
+            - "time"
+            - "time"
+          return: "integer"
+        - args:
+            - "date"
+            - "date"
+          return: "integer"
+        - args:
+            - "timestamp"
+            - "date"
+          return: "integer"
+        - args:
+            - "timestamp"
+            - "time"
+          return: "integer"
+        - args:
+            - "time"
+            - "timestamp"
+          return: "integer"
+        - args:
+            - "time"
+            - "date"
+          return: "integer"
+        - args:
+            - "date"
+            - "time"
+          return: "integer"
+        - args:
+            - "date"
+            - "timestamp"
+          return: "integer"
     - names: #https://docs.snowflake.net/manuals/sql-reference/functions/substr.html
         - "substring"
       signatures:
@@ -2175,3 +2442,8 @@ expressions:
       variable_signatures:
         - return: boolean
           arg_type: boolean
+    - names:
+        - concat
+      variable_signatures:
+        - return: varchar
+          arg_type: varchar
