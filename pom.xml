@@ -26,7 +26,7 @@
   <name>Dremio Snowflake Community Connector</name>
 
   <properties>
-    <version.dremio>4.2.2-202004211133290458-b550b6fa</version.dremio>
+    <version.dremio>4.7.3-202008270723550726-918276ee</version.dremio>
   </properties>
 
   <dependencies>
