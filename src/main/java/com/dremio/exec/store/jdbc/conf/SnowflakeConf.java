@@ -71,6 +71,10 @@ public class SnowflakeConf extends AbstractArpConf<SnowflakeConf> {
         JdbcStoragePlugin.Config config) {
       return new SnowflakeSchemaFetcher(name, dataSource, timeout, config);
     }
+
+    public boolean supportsNestedAggregations() {
+      return false;
+    }
   }
 
   /*
