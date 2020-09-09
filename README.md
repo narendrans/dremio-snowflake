@@ -88,7 +88,7 @@ Usage
 Building and Installation
 -----------
 
-0. Change the pom's dremimo.version to suit your Dremio's version. `version.dremio>4.7.3-202008270723550726-918276ee</version.dremio>`
+0. Change the pom's dremio.version to suit your Dremio's version. `version.dremio>4.7.3-202008270723550726-918276ee</version.dremio>`
 1. In root directory with the pom.xml file run `mvn clean install -DskipTests`. If you want to run the tests, add the JDBC jar to your local maven repo along with environment variables that are required. Check the basic test example for more details.
 2. Take the resulting .jar file in the target folder and put it in the <DREMIO_HOME>\jars folder in Dremio
 3. Download the Snowflake JDBC driver from (https://mvnrepository.com/artifact/net.snowflake/snowflake-jdbc/3.8.6 and click on the JAR link) and put in in the <DREMIO_HOME>\jars\3rdparty folder
