@@ -6,10 +6,3 @@ before_install:
 script: 
   - mvn clean install -DskipTests
   - mv target/dremio-snowflake-plugin-*.jar dremio-snowflake-plugin.jar
-deploy:
-  provider: releases
-  api_key:
-    secure: cLI14EeIvr+N3fjqaUKyz6yLDTRmrmH8GTNxULxys+59dfyQTkOcYLDOQmqEvAB3TRfbW42yYnG16uIM4Mh42oCK05ZQ2LIARwz2JLq4biwC/MixyNooSSl+dSBUHGx8sgejVuPAulFmS2hhR8FPIdZqL3I15vgjbz9pF5+UKscjjy4C4qtVi5BelfQ+4+582/enzPYd5qYgzlVYt9ZWbRgNe/ZlqEgILApTGU1e3KpjxHO7NvNTrDRyyqJv4ELv/ccoXiZrarE6sBOVEVXwtbGTDI/8sIDYqFId418COJeTJ4y1/qvJG/Mto6eEwqPxZbas6iCrYUFV2ch/ZBfmOQV2bdJvLRBpbqP+yYD8CmcIwy3EK6kJ95exO18QV17hh125qXK5IHQwx9/JkwpZ8XwPWJhnfF22lt2r6atrZDccZ6/m1DQl5RlBPIZvKVvZcZ0/y71xccDJreB3tLYICfnlb3AQC/8fNEXd/Exr5yKktQ4orBOmZEM57QMSG6w7oI7qvyLGRsnsfM826uCrAgir1n0rXldFsQTQ3hgEpLp5OKAMCAK7mR+lY43teoaBrwmOg5pjCXQVWl7Hn8BnuhKIJfiEyQzgmuydpJ7CuvfuEeIGeDj1nP+exnnBYQ4V/A27HuT1XJ96Da6i92BGwTKMehKdqKIpmngHO89sjq0=
-  file: dremio-snowflake-plugin.jar
-  on:
-    repo: narendrans/dremio-snowflake
