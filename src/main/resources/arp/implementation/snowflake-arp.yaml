@@ -2326,6 +2326,18 @@ expressions:
             - "varbinary"
             - "varbinary"
           return: "boolean"
+        - args:
+            - "varchar"
+            - "varchar"
+            - "varchar" # The escape modifier character
+          return: "boolean"
+          rewrite: "{0} like {1} ESCAPE {2}"
+        - args:
+            - "varbinary"
+            - "varbinary"
+            - "varchar" # The escape modifier character
+          return: "boolean"
+          rewrite: "{0} like {1} ESCAPE {2}"
     - names:
         - "not"
       signatures:
