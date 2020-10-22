@@ -973,6 +973,23 @@ expressions:
             - time
           rewrite: "WEEK({0})"
 
+    - names:
+        - convert_timezone # https://docs.snowflake.com/en/sql-reference/functions/convert_timezone.html
+      signatures:
+        - return: timestamp
+          args:
+            - varchar
+            - timestamp
+          # Remove timezone from the result, otherwise Dremio will ignore it
+          rewrite: "TO_TIMESTAMP_NTZ(CONVERT_TIMEZONE({0}, {1}))"
+        - return: timestamp
+          args:
+            - varchar
+            - varchar
+            - timestamp
+          # Remove timezone from the result, otherwise Dremio will ignore it. Supports only timestamps without timezone.
+          rewrite: "TO_TIMESTAMP_NTZ(CONVERT_TIMEZONE({0}, {1}, {2}))"
+
     # Math functions
     - names:
         - "log" #https://docs.snowflake.net/manuals/sql-reference/functions/log.html
