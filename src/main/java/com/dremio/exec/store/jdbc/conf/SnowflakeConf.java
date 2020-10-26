@@ -98,6 +98,11 @@ public class SnowflakeConf extends AbstractArpConf<SnowflakeConf> {
   @NotMetadataImpacting
   public int fetchSize = 2000;
 
+  @Tag(5)
+  @NotMetadataImpacting
+  @DisplayMetadata(label = "Grant External Query access (External Query allows creation of VDS from a Snowflake query. Learn more here: https://docs.dremio.com/data-sources/external-queries.html#enabling-external-queries)")
+  public boolean enableExternalQuery = false;
+
   @VisibleForTesting
   public String toJdbcConnectionString() {
     checkNotNull(this.jdbcURL, "JDBC URL is required");
@@ -114,6 +119,7 @@ public class SnowflakeConf extends AbstractArpConf<SnowflakeConf> {
         .withDatasourceFactory(this::newDataSource)
         .clearHiddenSchemas()
         .addHiddenSchema("SYSTEM")
+        .withAllowExternalQuery(enableExternalQuery)
         .build();
   }
 
