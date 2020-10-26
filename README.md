@@ -6,12 +6,10 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/ecc264fe94074379afc080f2e1549630)](https://app.codacy.com/app/narendrans/dremio-snowflake?utm_source=github.com&utm_medium=referral&utm_content=narendrans/dremio-snowflake&utm_campaign=Badge_Grade_Dashboard)
 [![Build Status](https://travis-ci.org/narendrans/dremio-snowflake.svg?branch=master)](https://travis-ci.org/narendrans/dremio-snowflake)
 ![Last Commit](https://img.shields.io/github/last-commit/narendrans/dremio-snowflake)
-[![Docker build](https://img.shields.io/docker/cloud/build/narendrans/dremio-snowflake.svg)](https://hub.docker.com/r/narendrans/dremio-snowflake/builds)
 
 ![Latest Release](https://img.shields.io/github/v/release/narendrans/dremio-snowflake)
 ![License](https://img.shields.io/badge/license-Apache%202-blue)
 ![Platform](https://img.shields.io/badge/platform-linux%20%7C%20macos%20%7C%20windows-blue)
-[![Chat](https://img.shields.io/gitter/room/Dremio-Snowflake-Connector/community)](https://gitter.im/Dremio-Snowflake-Connector/community)
 
 <!--ts-->
    * [Overview](#overview)
@@ -88,10 +86,10 @@ Usage
 Building and Installation
 -----------
 
-0. Change the pom's dremio.version to suit your Dremio's version. `version.dremio>4.7.3-202008270723550726-918276ee</version.dremio>`
+0. Change the pom's dremio.version to suit your Dremio's version. `<version.dremio>4.9.1-202010230218060541-2e764ed0</version.dremio>`
 1. In root directory with the pom.xml file run `mvn clean install -DskipTests`. If you want to run the tests, add the JDBC jar to your local maven repo along with environment variables that are required. Check the basic test example for more details.
 2. Take the resulting .jar file in the target folder and put it in the <DREMIO_HOME>\jars folder in Dremio
-3. Download the Snowflake JDBC driver from (https://mvnrepository.com/artifact/net.snowflake/snowflake-jdbc/3.8.6 and click on the JAR link) and put in in the <DREMIO_HOME>\jars\3rdparty folder
+3. Download the Snowflake JDBC driver from (https://repo1.maven.org/maven2/net/snowflake/snowflake-jdbc/3.12.13/snowflake-jdbc-3.12.13.jar) and put in in the <DREMIO_HOME>\jars\3rdparty folder
 4. Restart Dremio
 
 Building a Docker image

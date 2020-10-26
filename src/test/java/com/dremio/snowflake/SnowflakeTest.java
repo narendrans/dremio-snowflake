@@ -176,11 +176,6 @@ public class SnowflakeTest {
     assertEquals(new String(dremioRs.getBytes("Q")), new String(snowflakeRs.getBytes("Q")));
     assertEquals(new String(dremioRs.getBytes("R")), new String(snowflakeRs.getBytes("R")));
 
-    assertEquals(dremioRs.getTimestamp("S"), snowflakeRs.getTimestamp("S"));
-    assertEquals(dremioRs.getTime("T"), snowflakeRs.getTime("T"));
-    assertEquals(dremioRs.getTimestamp("U"), snowflakeRs.getTimestamp("U"));
-
-
     dremioStatement.close();
     snowflakeStatement.close();
 
