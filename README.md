@@ -15,6 +15,8 @@
 
 * Added support for [external queries](https://docs.dremio.com/data-sources/external-queries.html#enabling-external-queries)
 
+### Contents
+
 <!--ts-->
    * [Overview](#overview)
       * [Use Cases](#use-cases)
