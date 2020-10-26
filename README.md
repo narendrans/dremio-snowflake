@@ -13,7 +13,7 @@
 
 ### What's new in 4.9.1
 
-* Added support for ![external queries](https://docs.dremio.com/data-sources/external-queries.html#enabling-external-queries)
+* Added support for [external queries](https://docs.dremio.com/data-sources/external-queries.html#enabling-external-queries)
 
 <!--ts-->
    * [Overview](#overview)
