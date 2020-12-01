@@ -19,16 +19,15 @@ package com.dremio.exec.store.jdbc.conf;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import javax.sql.DataSource;
+
+import com.dremio.exec.store.jdbc.*;
+import com.dremio.options.OptionManager;
+import com.dremio.security.CredentialsService;
 import org.apache.log4j.Logger;
 import com.dremio.exec.catalog.conf.DisplayMetadata;
 import com.dremio.exec.catalog.conf.NotMetadataImpacting;
 import com.dremio.exec.catalog.conf.Secret;
 import com.dremio.exec.catalog.conf.SourceType;
-import com.dremio.exec.server.SabotContext;
-import com.dremio.exec.store.jdbc.CloseableDataSource;
-import com.dremio.exec.store.jdbc.DataSources;
-import com.dremio.exec.store.jdbc.JdbcSchemaFetcher;
-import com.dremio.exec.store.jdbc.JdbcStoragePlugin;
 import com.dremio.exec.store.jdbc.JdbcStoragePlugin.Config;
 import com.dremio.exec.store.jdbc.dialect.arp.ArpDialect;
 import com.dremio.exec.store.jdbc.dialect.arp.ArpYaml;
@@ -43,21 +42,41 @@ public class SnowflakeConf extends AbstractArpConf<SnowflakeConf> {
 
   private static final String ARP_FILENAME = "arp/implementation/snowflake-arp.yaml";
   private static final ArpDialect ARP_DIALECT =
-      AbstractArpConf.loadArpFile(ARP_FILENAME, (SnowflakeDialect::new));
+      AbstractArpConf.loadArpFile(ARP_FILENAME, (ArpDialect::new));
   private static final String DRIVER = "net.snowflake.client.jdbc.SnowflakeDriver";
   private static Logger logger = Logger.getLogger(SnowflakeConf.class);
 
   /*
     The following block is required as Snowflake reports integers as NUMBER(38,0).
    */
-  static class SnowflakeSchemaFetcher extends JdbcSchemaFetcher {
+  static class SnowflakeSchemaFetcher implements JdbcSchemaFetcher {
 
     public SnowflakeSchemaFetcher(String name, DataSource dataSource, int timeout, Config config) {
-      super(name, dataSource, timeout, config);
+      super();
     }
 
     protected boolean usePrepareForColumnMetadata() {
       return true;
+    }
+
+    @Override
+    public JdbcFetcherProto.GetStateResponse getState(JdbcFetcherProto.GetStateRequest getStateRequest) {
+      return null;
+    }
+
+    @Override
+    public JdbcFetcherProto.CatalogOrSchemaExistsResponse catalogOrSchemaExists(JdbcFetcherProto.CatalogOrSchemaExistsRequest catalogOrSchemaExistsRequest) {
+      return null;
+    }
+
+    @Override
+    public void start() throws Exception {
+
+    }
+
+    @Override
+    public void close() throws Exception {
+
     }
   }
 
@@ -111,7 +130,7 @@ public class SnowflakeConf extends AbstractArpConf<SnowflakeConf> {
 
   @Override
   @VisibleForTesting
-  public Config toPluginConfig(SabotContext context) {
+  public Config toPluginConfig(CredentialsService credentialsService, OptionManager optionManager) {
     logger.info("Connecting to Snowflake");
     return JdbcStoragePlugin.Config.newBuilder()
         .withDialect(getDialect())
