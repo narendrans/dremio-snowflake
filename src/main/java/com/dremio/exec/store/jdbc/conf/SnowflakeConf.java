@@ -40,15 +40,10 @@ public class SnowflakeConf extends AbstractArpConf<SnowflakeConf> {
 
     private static final String ARP_FILENAME = "arp/implementation/snowflake-arp.yaml";
     private static final ArpDialect ARP_DIALECT =
-            AbstractArpConf.loadArpFile(ARP_FILENAME, (ArpDialect::new));
+            AbstractArpConf.loadArpFile(ARP_FILENAME, (SnowflakeDialect::new));
     private static final String DRIVER = "net.snowflake.client.jdbc.SnowflakeDriver";
     private static Logger logger = Logger.getLogger(SnowflakeConf.class);
 
-    /*
-        TODO: Investigate and fix this. Due to changes in the API and how Snowflake uses NUMBER(38,0)
-        to represent integer the following error is thrown if a table containing decimals is queried
-        IllegalArgumentException: Gandiva only supports decimals of upto 38 precision. Input precision : 0.
-     */
     static class SnowflakeSchemaFetcher extends JdbcSchemaFetcherImpl {
 
         public SnowflakeSchemaFetcher(String name, int timeout, Config config) {
