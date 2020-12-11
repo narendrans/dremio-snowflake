@@ -16,12 +16,23 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
-      - name: Run a multi-line script
+      - name: Install Dremio
         run: |
           cd /tmp && wget https://download.dremio.com/community-server/11.0.0-202011171636110752-16ab953d/dremio-community-11.0.0-202011171636110752-16ab953d.tar.gz
           mkdir /opt/dremio && tar xvf /tmp/dremio-community-11.0.0-202011171636110752-16ab953d.tar.gz -C /opt/dremio --strip-components=1
           export JAVA_EXTRA_OPTS="-Ddebug.addDefaultUser=true"
-          cd $GITHUB_WORKSPACE && mvn clean install -DskipTests && mv target/*.jar /opt/dremio/jars
+      - name: Build snowflake JAR
+        run: |
+          cd $GITHUB_WORKSPACE && mvn clean install -DskipTests && cp target/*.jar /opt/dremio/jars
           cd /opt/dremio/jars && wget https://repo1.maven.org/maven2/net/snowflake/snowflake-jdbc/3.12.16/snowflake-jdbc-3.12.16.jar
-          /opt/dremio/bin/dremio start
-          cd $GITHUB_WORKSPACE && mvn clean install
+      - name: Start Dremio
+        run: /opt/dremio/bin/dremio start 
+      - name: Wait for Dremio to be available
+        run: |
+          until curl -Iks http://localhost:9047; do
+              echo waiting for dremio
+              sleep 1
+          done
+          cat /opt/dremio/log/server.out
+      - name: Run unit tests
+        run: cd $GITHUB_WORKSPACE && mvn test
