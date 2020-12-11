@@ -23,7 +23,7 @@ jobs:
           export JAVA_EXTRA_OPTS="-Ddebug.addDefaultUser=true"
       - name: Build snowflake JAR
         run: |
-          cd $GITHUB_WORKSPACE && mvn clean install -DskipTests && cp target/*.jar /opt/dremio/jars
+          cd $GITHUB_WORKSPACE && mvn install -DskipTests && cp target/*.jar /opt/dremio/jars
           cd /opt/dremio/jars && wget https://repo1.maven.org/maven2/net/snowflake/snowflake-jdbc/3.12.16/snowflake-jdbc-3.12.16.jar
       - name: Start Dremio
         run: /opt/dremio/bin/dremio start 
@@ -35,4 +35,8 @@ jobs:
           done
           cat /opt/dremio/log/server.out
       - name: Run unit tests
+        env: 
+          SNOWFLAKE_JDBC_URL: ${{ secrets.SNOWFLAKE_JDBC_URL }}
+          SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
+          SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
         run: cd $GITHUB_WORKSPACE && mvn test
