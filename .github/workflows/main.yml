@@ -1,0 +1,27 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      - name: Run a multi-line script
+        run: |
+          cd /tmp && wget https://download.dremio.com/community-server/11.0.0-202011171636110752-16ab953d/dremio-community-11.0.0-202011171636110752-16ab953d.tar.gz
+          tar xvf dremio-community-11.0.0-202011171636110752-16ab953d.tar.gz -C /opt/dremio --strip-components=1
+          export JAVA_EXTRA_OPTS="-Ddebug.addDefaultUser=true"
+          cd $GITHUB_WORKSPACE && mvn clean install -DskipTests && mv target/*.jar /opt/dremio/jars
+          cd /opt/dremio/jars && wget https://repo1.maven.org/maven2/net/snowflake/snowflake-jdbc/3.12.16/snowflake-jdbc-3.12.16.jar
+          /opt/dremio/bin/dremio start
+          cd $GITHUB_WORKSPACE && mvn clean install
