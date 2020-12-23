@@ -61,7 +61,8 @@ public class SnowflakeConf extends AbstractArpConf<SnowflakeConf> {
             super(yaml);
         }
 
-        public JdbcSchemaFetcherImpl getSchemaFetcher(JdbcPluginConfig config) {
+        @Override
+        public JdbcSchemaFetcherImpl newSchemaFetcher(JdbcPluginConfig config) {
             return new SnowflakeSchemaFetcher(config);
         }
 
