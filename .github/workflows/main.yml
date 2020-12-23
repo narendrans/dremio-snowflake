@@ -18,8 +18,8 @@ jobs:
           java-version: 1.8
       - name: Install Dremio
         run: |
-          cd /tmp && wget https://download.dremio.com/community-server/11.0.0-202011171636110752-16ab953d/dremio-community-11.0.0-202011171636110752-16ab953d.tar.gz
-          mkdir /opt/dremio && tar xvf /tmp/dremio-community-11.0.0-202011171636110752-16ab953d.tar.gz -C /opt/dremio --strip-components=1
+          cd /tmp && wget https://download.dremio.com/community-server/12.0.0-202012212145230282-d8947fd3/dremio-community-12.0.0-202012212145230282-d8947fd3.tar.gz
+          mkdir /opt/dremio && tar xvf /tmp/dremio-community-12.0.0-202012212145230282-d8947fd3.tar.gz -C /opt/dremio --strip-components=1
           export JAVA_EXTRA_OPTS="-Ddebug.addDefaultUser=true"
       - name: Build snowflake JAR
         run: |

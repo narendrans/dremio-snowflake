@@ -70,7 +70,6 @@ public class SnowflakeConf extends AbstractArpConf<SnowflakeConf> {
         }
     }
 
-
     /*
        Check Snowflake JDBC connection docs for more details: https://docs.snowflake.net/manuals/user-guide/jdbc-configure.html
      */
