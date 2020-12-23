@@ -27,11 +27,11 @@ jobs:
       - name: Start & wait for Dremio to be available
         run: |
           /opt/dremio/bin/dremio start
-          curl 'http://localhost:9047/apiv2/bootstrap/firstuser' -X PUT -H 'Authorization: _dremionull' -H 'Content-Type: application/json'  --data-binary '{"userName":"dremio","firstName":"dremio","lastName":"dremio","email":"dremio@dremio.com","createdAt":1557027923359,"password":"dremio123"}' --compressed
           until curl -Iks http://localhost:9047; do
               echo waiting for dremio
               sleep 1
           done
+          curl 'http://localhost:9047/apiv2/bootstrap/firstuser' -X PUT -H 'Authorization: _dremionull' -H 'Content-Type: application/json'  --data-binary '{"userName":"dremio","firstName":"dremio","lastName":"dremio","email":"dremio@dremio.com","createdAt":1557027923359,"password":"dremio123"}' --compressed
           cat /opt/dremio/log/server.out
       - name: Run unit tests
         env: 
