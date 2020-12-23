@@ -20,7 +20,6 @@ jobs:
         run: |
           cd /tmp && wget https://download.dremio.com/community-server/12.0.0-202012212145230282-d8947fd3/dremio-community-12.0.0-202012212145230282-d8947fd3.tar.gz
           mkdir /opt/dremio && tar xvf /tmp/dremio-community-12.0.0-202012212145230282-d8947fd3.tar.gz -C /opt/dremio --strip-components=1
-          echo "JAVA_EXTRA_OPTS=\"-Ddebug.addDefaultUser=true\"" >> /opt/dremio/conf/dremio-env
       - name: Build snowflake JAR
         run: |
           cd $GITHUB_WORKSPACE && mvn install -DskipTests && cp target/*.jar /opt/dremio/jars
@@ -28,6 +27,7 @@ jobs:
       - name: Start & wait for Dremio to be available
         run: |
           /opt/dremio/bin/dremio start
+          curl 'http://localhost:9047/apiv2/bootstrap/firstuser' -X PUT -H 'Authorization: _dremionull' -H 'Content-Type: application/json'  --data-binary '{"userName":"dremio","firstName":"dremio","lastName":"dremio","email":"dremio@dremio.com","createdAt":1557027923359,"password":"dremio123"}' --compressed
           until curl -Iks http://localhost:9047; do
               echo waiting for dremio
               sleep 1
