@@ -26,7 +26,7 @@ import com.dremio.exec.catalog.conf.DisplayMetadata;
 import com.dremio.exec.catalog.conf.NotMetadataImpacting;
 import com.dremio.exec.catalog.conf.Secret;
 import com.dremio.exec.catalog.conf.SourceType;
-import com.dremio.exec.store.jdbc.JdbcStoragePlugin.Config;
+import com.dremio.exec.store.jdbc.JdbcPluginConfig;
 import com.dremio.exec.store.jdbc.dialect.arp.ArpDialect;
 import com.dremio.exec.store.jdbc.dialect.arp.ArpYaml;
 import com.google.common.annotations.VisibleForTesting;
@@ -46,8 +46,8 @@ public class SnowflakeConf extends AbstractArpConf<SnowflakeConf> {
 
     static class SnowflakeSchemaFetcher extends JdbcSchemaFetcherImpl {
 
-        public SnowflakeSchemaFetcher(String name, int timeout, Config config) {
-            super(name, timeout, config);
+        public SnowflakeSchemaFetcher(JdbcPluginConfig config) {
+            super(config);
         }
 
         protected boolean usePrepareForColumnMetadata() {
@@ -61,9 +61,8 @@ public class SnowflakeConf extends AbstractArpConf<SnowflakeConf> {
             super(yaml);
         }
 
-        @Override
-        public JdbcSchemaFetcherImpl getSchemaFetcher(String name, int timeout, Config config) {
-            return new SnowflakeSchemaFetcher(name, timeout, config);
+        public JdbcSchemaFetcherImpl getSchemaFetcher(JdbcPluginConfig config) {
+            return new SnowflakeSchemaFetcher(config);
         }
 
         public boolean supportsNestedAggregations() {
@@ -106,10 +105,13 @@ public class SnowflakeConf extends AbstractArpConf<SnowflakeConf> {
 
     @Override
     @VisibleForTesting
-    public Config toPluginConfig(CredentialsService credentialsService, OptionManager optionManager) {
+    public JdbcPluginConfig buildPluginConfig(
+            JdbcPluginConfig.Builder configBuilder,
+            CredentialsService credentialsService,
+            OptionManager optionManager
+    ){
         logger.info("Connecting to Snowflake");
-        return JdbcStoragePlugin.Config.newBuilder()
-                .withDialect(getDialect())
+        return configBuilder.withDialect(getDialect())
                 .withFetchSize(fetchSize)
                 .withDatasourceFactory(this::newDataSource)
                 .clearHiddenSchemas()
