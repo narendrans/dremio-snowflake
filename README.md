@@ -11,6 +11,10 @@
 ![License](https://img.shields.io/badge/license-Apache%202-blue)
 ![Platform](https://img.shields.io/badge/platform-linux%20%7C%20macos%20%7C%20windows-blue)
 
+### 13.1.0 Release
+
+If you are running Dremio 13.0.0+ release please download the latest version of the plugin here: https://github.com/narendrans/dremio-snowflake/releases Older versions compiled against 12.x versions of Dremio and below are NOT compatible with this.
+
 ### 12.0.0 Release
 
 If you are running Dremio 12.0.0 release please download the latest version of the plugin here: https://github.com/narendrans/dremio-snowflake/releases Older versions compiled against 11.x versions of Dremio and below are NOT compatible with this.
