@@ -22,12 +22,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.dremio.plugins</groupId>
-    <version>13.0.0</version>
+    <version>17.0.0</version>
     <artifactId>dremio-snowflake-plugin</artifactId>
     <name>Dremio Snowflake Community Connector</name>
 
     <properties>
-        <dremio.version>13.1.0-202102110202430875-3e6f3e7c</dremio.version>
+        <dremio.version>17.0.0-202107060524010627-31b5222b</dremio.version>
     </properties>
 
     <dependencies>
@@ -36,12 +36,6 @@
             <artifactId>dremio-ce-jdbc-plugin</artifactId>
             <version>${dremio.version}</version>
         </dependency>
-
-        <!--<dependency>
-            <groupId>com.dremio.community.plugins</groupId>
-            <artifactId>dremio-ce-jdbc-fetcher-api</artifactId>
-            <version>${dremio.version}</version>
-        </dependency>-->
 
         <dependency>
             <groupId>com.dremio.distribution</groupId>
@@ -52,7 +46,7 @@
         <dependency>
             <groupId>net.snowflake</groupId>
             <artifactId>snowflake-jdbc</artifactId>
-            <version>3.12.4</version>
+            <version>3.13.5</version>
             <scope>test</scope>
         </dependency>
 

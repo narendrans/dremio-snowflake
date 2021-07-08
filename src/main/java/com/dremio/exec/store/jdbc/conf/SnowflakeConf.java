@@ -29,13 +29,14 @@ import com.dremio.exec.catalog.conf.SourceType;
 import com.dremio.exec.store.jdbc.JdbcPluginConfig;
 import com.dremio.exec.store.jdbc.dialect.arp.ArpDialect;
 import com.dremio.exec.store.jdbc.dialect.arp.ArpYaml;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.annotations.VisibleForTesting;
 import io.protostuff.Tag;
 
 /**
  * Configuration for Snowflake.
  */
-@SourceType(value = "SNOWFLAKE", label = "Snowflake")
+@SourceType(value = "SNOWFLAKE", label = "Snowflake", uiConfig = "snowflake-layout.json", externalQuerySupported = true)
 public class SnowflakeConf extends AbstractArpConf<SnowflakeConf> {
 
     private static final String ARP_FILENAME = "arp/implementation/snowflake-arp.yaml";
@@ -92,10 +93,22 @@ public class SnowflakeConf extends AbstractArpConf<SnowflakeConf> {
     @NotMetadataImpacting
     public int fetchSize = 2000;
 
+    //Leave this as JsonIgnore to allow for migration of old data sources
     @Tag(5)
     @NotMetadataImpacting
     @DisplayMetadata(label = "Grant External Query access (External Query allows creation of VDS from a Snowflake query. Learn more here: https://docs.dremio.com/data-sources/external-queries.html#enabling-external-queries)")
+    @JsonIgnore
     public boolean enableExternalQuery = false;
+
+    @Tag(6)
+    @DisplayMetadata(label = "Maximum idle connections")
+    @NotMetadataImpacting
+    public int maxIdleConns = 8;
+
+    @Tag(7)
+    @DisplayMetadata(label = "Connection idle time (s)")
+    @NotMetadataImpacting
+    public int idleTimeSec = 60;
 
     @VisibleForTesting
     public String toJdbcConnectionString() {
@@ -116,14 +129,14 @@ public class SnowflakeConf extends AbstractArpConf<SnowflakeConf> {
                 .withDatasourceFactory(this::newDataSource)
                 .clearHiddenSchemas()
                 .addHiddenSchema("SYSTEM")
-                .withAllowExternalQuery(enableExternalQuery)
+                //.withAllowExternalQuery(enableExternalQuery)
                 .build();
     }
 
     private CloseableDataSource newDataSource() {
         return DataSources.newGenericConnectionPoolDataSource(DRIVER,
                 toJdbcConnectionString(), username, password, null,
-                DataSources.CommitMode.DRIVER_SPECIFIED_COMMIT_MODE);
+                DataSources.CommitMode.DRIVER_SPECIFIED_COMMIT_MODE, maxIdleConns, idleTimeSec);
     }
 
     @Override

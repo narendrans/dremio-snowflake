@@ -1,0 +1,25 @@
+{
+  "sourceType": "SNOWFLAKE",
+  "metadataRefresh": {
+    "datasetDiscovery": true
+  },
+  "form": {
+    "tabs": [
+      {
+        "name": "General",
+        "isGeneral": true,
+        "sections": [
+          {
+            "name": "Snowflake Source",
+            "layout": "row",
+            "elements": [
+                {
+                    "propName": "config.enableExternalQuery"
+                }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
