@@ -18,12 +18,12 @@ jobs:
           java-version: 1.8
       - name: Install Dremio
         run: |
-          cd /tmp && wget https://download.dremio.com/community-server/12.0.0-202012212145230282-d8947fd3/dremio-community-12.0.0-202012212145230282-d8947fd3.tar.gz
-          mkdir /opt/dremio && tar xvf /tmp/dremio-community-12.0.0-202012212145230282-d8947fd3.tar.gz -C /opt/dremio --strip-components=1
+          cd /tmp && wget https://download.dremio.com/community-server/17.0.0-202107060524010627-31b5222b/dremio-community-17.0.0-202107060524010627-31b5222b.tar.gz
+          mkdir /opt/dremio && tar xvf /tmp/dremio-community-17.0.0-202107060524010627-31b5222b.tar.gz -C /opt/dremio --strip-components=1
       - name: Build snowflake JAR
         run: |
           cd $GITHUB_WORKSPACE && mvn install -DskipTests && cp target/*.jar /opt/dremio/jars
-          cd /opt/dremio/jars && wget https://repo1.maven.org/maven2/net/snowflake/snowflake-jdbc/3.12.16/snowflake-jdbc-3.12.16.jar
+          cd /opt/dremio/jars && wget https://repo1.maven.org/maven2/net/snowflake/snowflake-jdbc/3.13.5/snowflake-jdbc-3.13.5.jar
       - name: Start & wait for Dremio to be available
         run: |
           /opt/dremio/bin/dremio start
