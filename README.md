@@ -13,23 +13,8 @@
 
 ### 17.0.0 Release
 
-If you are running Dremio 17.0.0+ release please download the latest version of the plugin here: https://github.com/narendrans/dremio-snowflake/releases Older versions compiled against 13.x versions of Dremio and below are NOT compatible with this.
+If you are running Dremio 17.0.0+ release please download the latest version of the plugin here: https://github.com/narendrans/dremio-snowflake/releases Older versions compiled against 16.x versions of Dremio and below are NOT compatible with this.
 
-### 13.1.0 Release
-
-If you are running Dremio 13.0.0+ release please download the latest version of the plugin here: https://github.com/narendrans/dremio-snowflake/releases Older versions compiled against 12.x versions of Dremio and below are NOT compatible with this.
-
-### 12.0.0 Release
-
-If you are running Dremio 12.0.0 release please download the latest version of the plugin here: https://github.com/narendrans/dremio-snowflake/releases Older versions compiled against 11.x versions of Dremio and below are NOT compatible with this.
-
-### 11.0.0 Release
-
-If you are running Dremio 11.0.0 release please download the latest version of the plugin here: https://github.com/narendrans/dremio-snowflake/releases Older versions compiled against 4.x versions of Dremio are NOT compatible with this.
-
-### What's new in 4.9.1
-
-* Added support for [external queries](https://docs.dremio.com/data-sources/external-queries.html#enabling-external-queries)
 
 ### Contents
 
@@ -86,9 +71,6 @@ Downloading a Release
 -----------
 
 * To download a release, [click here](https://github.com/narendrans/dremio-snowflake/releases)
-* To test it using Docker, run the following command:
-
-`docker run -p 9047:9047 -p 31010:31010 narendrans/dremio-snowflake`
 
 Usage
 -----------
@@ -108,44 +90,11 @@ Usage
 Building and Installation
 -----------
 
-0. Change the pom's dremio.version to suit your Dremio's version. `<version.dremio>4.9.1-202010230218060541-2e764ed0</version.dremio>`
+0. Change the pom's dremio.version to suit your Dremio's version. `<dremio.version>17.0.0-202107060524010627-31b5222b</dremio.version>`
 1. In root directory with the pom.xml file run `mvn clean install -DskipTests`. If you want to run the tests, add the JDBC jar to your local maven repo along with environment variables that are required. Check the basic test example for more details.
 2. Take the resulting .jar file in the target folder and put it in the <DREMIO_HOME>\jars folder in Dremio
-3. Download the Snowflake JDBC driver from (https://repo1.maven.org/maven2/net/snowflake/snowflake-jdbc/3.12.13/snowflake-jdbc-3.12.13.jar) and put in in the <DREMIO_HOME>\jars\3rdparty folder
+3. Download the Snowflake JDBC driver from (https://mvnrepository.com/artifact/net.snowflake/snowflake-jdbc) and put in in the <DREMIO_HOME>\jars\3rdparty folder
 4. Restart Dremio
-
-Building a Docker image
--------
-Note: You can pull the pre-built docker images: https://hub.docker.com/r/narendrans/dremio-snowflake
-
-Dockerfile:
-
-```
-FROM dremio/dremio-oss:4.9.1
-USER root
-
-WORKDIR /tmp
-
-RUN wget http://apache.osuosl.org/maven/maven-3/3.6.1/binaries/apache-maven-3.6.1-bin.zip && \
-	unzip apache-maven-3.6.1-bin.zip && \
-	git clone https://github.com/narendrans/dremio-snowflake.git && cd dremio-snowflake && \
-	export PATH=$PATH:/tmp/apache-maven-3.6.1/bin && \
-	mvn clean install -DskipTests && \
-	cp target/dremio-snowflake*.jar /opt/dremio/jars && \
-	cd /opt/dremio/jars && wget https://repo1.maven.org/maven2/net/snowflake/snowflake-jdbc/3.12.13/snowflake-jdbc-3.12.13.jar && \
-	chown dremio *snowflake*.jar && rm -rf ~/.m2 && rm -rf /tmp/*
-
-WORKDIR /opt/dremio
-USER dremio
-```
-
-Build:
-
-`docker build . -t dremio-snowflake`
-
-Run:
-
-`docker run -p 9047:9047 -p 31010:31010 dremio-snowflake`
 
 Debugging
 -----------
