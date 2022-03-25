@@ -21,6 +21,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import com.dremio.exec.store.jdbc.*;
 import com.dremio.options.OptionManager;
 import com.dremio.security.CredentialsService;
+import com.dremio.security.PasswordCredentials;
+import com.google.common.base.Strings;
 import org.apache.log4j.Logger;
 import com.dremio.exec.catalog.conf.DisplayMetadata;
 import com.dremio.exec.catalog.conf.NotMetadataImpacting;
@@ -32,6 +34,10 @@ import com.dremio.exec.store.jdbc.dialect.arp.ArpYaml;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.annotations.VisibleForTesting;
 import io.protostuff.Tag;
+
+import java.io.IOException;
+import java.net.URI;
+import java.sql.SQLException;
 
 /**
  * Configuration for Snowflake.
@@ -89,26 +95,31 @@ public class SnowflakeConf extends AbstractArpConf<SnowflakeConf> {
     public String password;
 
     @Tag(4)
+    @DisplayMetadata(label = "Secret resource url")
+    public String secretResourceUrl;
+
+    @Tag(5)
     @DisplayMetadata(label = "Record fetch size")
     @NotMetadataImpacting
     public int fetchSize = 2000;
 
     //Leave this as JsonIgnore to allow for migration of old data sources
-    @Tag(5)
+    @Tag(6)
     @NotMetadataImpacting
     @DisplayMetadata(label = "Grant External Query access (External Query allows creation of VDS from a Snowflake query. Learn more here: https://docs.dremio.com/data-sources/external-queries.html#enabling-external-queries)")
     @JsonIgnore
     public boolean enableExternalQuery = false;
 
-    @Tag(6)
+    @Tag(7)
     @DisplayMetadata(label = "Maximum idle connections")
     @NotMetadataImpacting
     public int maxIdleConns = 8;
 
-    @Tag(7)
+    @Tag(8)
     @DisplayMetadata(label = "Connection idle time (s)")
     @NotMetadataImpacting
     public int idleTimeSec = 60;
+
 
     @VisibleForTesting
     public String toJdbcConnectionString() {
@@ -122,20 +133,31 @@ public class SnowflakeConf extends AbstractArpConf<SnowflakeConf> {
             JdbcPluginConfig.Builder configBuilder,
             CredentialsService credentialsService,
             OptionManager optionManager
-    ){
+    ) {
         logger.info("Connecting to Snowflake");
         return configBuilder.withDialect(getDialect())
                 .withFetchSize(fetchSize)
-                .withDatasourceFactory(this::newDataSource)
+                .withDatasourceFactory(() -> newDataSource(credentialsService))
                 .clearHiddenSchemas()
                 .addHiddenSchema("SYSTEM")
                 //.withAllowExternalQuery(enableExternalQuery)
                 .build();
     }
 
-    private CloseableDataSource newDataSource() {
+    private CloseableDataSource newDataSource(CredentialsService credentialsService) throws SQLException {
+
+        PasswordCredentials credsFromCredentialsService = null;
+        if (!Strings.isNullOrEmpty(this.secretResourceUrl)) {
+            try {
+                URI secretURI = URI.create(secretResourceUrl);
+                credsFromCredentialsService = (PasswordCredentials) credentialsService.getCredentials(secretURI);
+            } catch (IOException e) {
+                throw new SQLException(e.getMessage(), e);
+            }
+        }
+
         return DataSources.newGenericConnectionPoolDataSource(DRIVER,
-                toJdbcConnectionString(), username, password, null,
+                toJdbcConnectionString(), username, (credsFromCredentialsService != null ? credsFromCredentialsService.getPassword() : password), null,
                 DataSources.CommitMode.DRIVER_SPECIFIED_COMMIT_MODE, maxIdleConns, idleTimeSec);
     }
 
