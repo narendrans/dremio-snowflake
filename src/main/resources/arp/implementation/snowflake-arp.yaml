@@ -26,8 +26,8 @@ syntax:
   identifier_length_limit: 256 #https://docs.snowflake.net/manuals/sql-reference/identifiers.html#object-identifiers
   allows_boolean_literal: false
   map_boolean_literal_to_bit: false
-  supports_catalogs: false
-  supports_schemas: false
+  supports_catalogs: true
+  supports_schemas: true
 
 # https://docs.snowflake.net/manuals/sql-reference/intro-summary-data-types.html
 data_types:
